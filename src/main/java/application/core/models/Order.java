@@ -1,6 +1,7 @@
 package application.core.models;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -12,6 +13,7 @@ import javax.persistence.Table;
 public class Order {
 
     @Id
+    @GeneratedValue
     private long orderId;
 
     private long traderId;
