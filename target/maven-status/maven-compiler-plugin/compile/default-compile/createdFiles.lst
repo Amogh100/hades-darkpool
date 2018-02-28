@@ -1,4 +1,5 @@
 application/core/repositories/OrderRepository.class
+application/core/OrderBook/OrderBook.class
 application/core/models/OrderType.class
 application/core/controllers/OrderController.class
 application/core/models/messages/ApiMessage.class
@@ -6,3 +7,4 @@ application/core/Application.class
 application/core/models/Order.class
 application/core/services/OrderValidator.class
 application/core/services/OrderService.class
+application/core/WebConfig.class

@@ -1,5 +1,7 @@
 package application.core.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -16,16 +18,23 @@ public class Order {
     @GeneratedValue
     private long orderId;
 
+    @JsonProperty(required = true)
     private long traderId;
 
+    @JsonProperty(required = true)
     private String ticker;
 
+    @JsonProperty(required = true)
     private double size;
 
+    @JsonProperty(required = true)
     private boolean bid;
 
+    @JsonProperty(required = true)
     private OrderType type;
 
+
+    @JsonProperty(required = true)
     private double price;
 
 

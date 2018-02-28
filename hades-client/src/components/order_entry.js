@@ -1,27 +1,52 @@
 import { DropdownButton } from "react-bootstrap";
 import { MenuItem } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import React, { Component } from "react";
 import styles from "./order_entry";
+import axios from "axios";
+import Order from "./order";
 
 class OrderEntry extends Component {
   constructor(props) {
     super(props);
-    this.validOrderTypes = ["Market", "Limit"];
+    this.validOrderTypes = ["MARKET", "LIMIT"];
     this.validAssets = ["BTC", "ETH", "XRP", "LTC"];
     this.state = {
       orderType: "Order Type",
       orderPrice: 0.0,
       size: 0,
       side: "Side",
-      asset: "Currency"
+      asset: "Currency",
+      traderId: 1
     };
     this.onTypeSelect = this.onTypeSelect.bind(this);
     this.onSideSelect = this.onSideSelect.bind(this);
     this.onAssetSelect = this.onAssetSelect.bind(this);
+    this.enterOrder = this.enterOrder.bind(this);
+  }
+
+  enterOrder(eventKey) {
+    console.log("Entering order!");
+    var bid = false;
+    if (this.state.side === "Buy") {
+      bid = true;
+    }
+    var order = new Order(
+      this.state.orderPrice,
+      this.state.size,
+      this.state.traderId,
+      this.state.asset,
+      bid,
+      this.state.orderType
+    );
+    console.log(JSON.stringify(order));
+    axios
+      .post("http://localhost:8080/order", order)
+      .then(response => alert(response.data.message));
   }
 
   onTypeSelect(eventKey) {
-    this.setState({ orderType: eventKey });
+    this.setState({ orderType: eventKey, orderPrice: 0.0 });
   }
 
   onSideSelect(eventKey) {
@@ -33,7 +58,7 @@ class OrderEntry extends Component {
   }
 
   getOrderPriceComponent() {
-    if (this.state.orderType === "Limit") {
+    if (this.state.orderType === "LIMIT") {
       return (
         <div>
           Limit Price<input
@@ -126,6 +151,9 @@ class OrderEntry extends Component {
           >
             {this.getAssetComponents()}
           </DropdownButton>
+          <Button bsStyle="primary" bsSize="large" onClick={this.enterOrder}>
+            Enter Order
+          </Button>
         </div>
         {size}
         {price}
