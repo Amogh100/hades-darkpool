@@ -12,6 +12,7 @@ like to make to this plan. I do want to specify more on the matching algorithm. 
 manages a list of orders at a given price level (this list is structured so that orders are sorted by time of arrival) and when an order on the opposite side (so the opposite side for a BUY is a SELL and vice versa) matches the 
 price or better comes in and then begins filling orders so long as the crossing order has volume and is within its limit price if it's a 
 limit order. Moreover, there should be a separate order book per asset (so an orderbook for BTC, one for ETH, etc.). For more info and a specific example of the matching process refer to the Price-time priority/FIFO answer to this stack overflow question asking about various order matching algorithms. https://stackoverflow.com/questions/13112062/which-are-the-order-matching-algorithms-most-commonly-used-by-electronic-financi</br></br></br>
-Spring Boot Server ![image](https://s17.postimg.org/m0xmc78n3/Spring_Boot.png)</br></br>
+
+4.) Spring Boot Server ![image](https://s17.postimg.org/m0xmc78n3/Spring_Boot.png)</br></br>
 Front end react client ![image](https://s17.postimg.org/4ox9qghn3/hades-cli.png) disregard missing order id 2. I placed order 2 under a different trader id.</br></br>
 Postgres view of the data ![image](https://s17.postimg.org/7vrta924v/psql.png)</br></br>
