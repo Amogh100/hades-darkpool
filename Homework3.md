@@ -13,4 +13,4 @@ manages a list of orders at a given price level (this list is structured so that
 price or better comes in and then begins filling orders so long as the crossing order has volume and is within its limit price if it's a 
 limit order. Moreover, there should be a separate order book per asset (so an orderbook for BTC, one for ETH, etc.). For more info and a specific example of the matching process refer to the Price-time priority/FIFO answer to this stack overflow question asking about various order matching algorithms. https://stackoverflow.com/questions/13112062/which-are-the-order-matching-algorithms-most-commonly-used-by-electronic-financi</br></br></br>
 Spring Boot Server ![image](https://s17.postimg.org/m0xmc78n3/Spring_Boot.png)</br></br>
-Front end react client ![image](https://s17.postimg.org/4ox9qghn3/hades-cli.png) </br></br>
+Front end react client ![image](https://s17.postimg.org/4ox9qghn3/hades-cli.png) disregard missing order id 2. I placed that order under a different trader id.</br></br>
