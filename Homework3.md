@@ -1,8 +1,8 @@
 1.) Goal (as per the original proposal) "Server that accepts orders over REST endpoint “/order”and puts them in an order book. 
 Simple Order Entry Form. (No matching algorithm yet)"</br>
-2.) I have basically accomplished the goal for this homework, as the code currently has a simple order entry form that allows a (single)
-user to enter orders and puts it in a single order book. This was a relatively straightforward task. The only modification for this
-was an additional feature I added that displays a table view of all open orders. This was done so that I can see all the orders
+2.) The one minor change I have made was in my original class specification I had OrderGateway as a Singleton class. After studying more about the Spring Boot framework, I have come to understand that the @Controller annotation for a class(which OrderGateway uses) by default constructs a singleton underneath within the framework. See here https://stackoverflow.com/questions/11508405/are-spring-mvc-controllers-singletons. I plan on making an OrderQueue class for HW4 to pipe orders to the relevant matching engine; this will be a singleton class that I will create as opposed to the framework creating it for me. Other than this, I have basically accomplished the goal for this homework, as the code currently has a simple order entry form that allows a (single)
+user to enter orders and puts it in a single order book. This was a relatively straightforward task. I even added
+an additional feature that displays a table view of all open orders. This was done so that I can see all the orders
 in the database without manually logging into the postgres instance and doing a "SELECT * from orders". This is going to have to get done
 in the future anyways, when querying open orders for a given user so I thought just to go ahead and do it early. The more complex work will happen
 in the next part, where there will be multiple order books for the various assets (it makes no sense/is impossible to only have 1 for matching all),
