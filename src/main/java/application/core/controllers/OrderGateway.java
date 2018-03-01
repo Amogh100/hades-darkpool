@@ -14,7 +14,7 @@ import javax.xml.ws.Response;
 import java.util.List;
 
 @RestController
-public class OrderController {
+public class OrderGateway {
 
     @Autowired
     private OrderService orderService;
