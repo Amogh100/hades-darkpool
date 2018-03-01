@@ -11,4 +11,4 @@ managing multiple users and then the actual matching algorithm. More on this on 
 like to make to this plan. I do want to specify more on the matching algorithm. This is a price-time priority algorithm, which essentially
 manages a list of orders at a given price level (this list is structured so that orders are sorted by time of arrival) and when an order on the opposite side (so the opposite side for a BUY is a SELL and vice versa) matches the 
 price or better comes in and then begins filling orders so long as the crossing order has volume and is within its limit price if it's a 
-limit order.
+limit order. Moreover, there should be a separate order book per asset (so an orderbook for BTC, one for ETH, etc.).
