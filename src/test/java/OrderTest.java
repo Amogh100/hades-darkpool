@@ -10,7 +10,7 @@ public class OrderTest {
         Order testLimit = new Order(1, "BTC", 0.15,true, OrderType.LIMIT, 10400, 1);
         assertEquals(testLimit.isBid(), true);
         assertEquals(testLimit.getSize(), 0.15, 0);
-        assertEquals(testLimit.getTicker(), "BTC");
+        assertEquals(testLimit.getTicker(), "ETH");
         assertEquals(testLimit.getTraderId(), 1);
         assertEquals(testLimit.getPrice(), 10400, 0);
         assertEquals(testLimit.getOrderId(),1);
