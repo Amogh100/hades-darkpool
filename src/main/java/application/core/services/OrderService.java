@@ -7,6 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
+/**
+ * Service that contains main business logic
+ * for adding orders and querying for relevant orders.
+ * Abstracts away access to the database
+ */
 @Service
 public class OrderService {
 
@@ -19,12 +24,21 @@ public class OrderService {
         this.orderBook = new OrderBook();
     }
 
-    public void addOrder(Order o){
-        orderBook.addOrder(o);
-        orders.save(o);
+    /**
+     *
+     * @param order Order to add to orderbook and store in database
+     */
+    public void addOrder(Order order){
+        orderBook.addOrder(order);
+        orders.save(order);
 
     }
 
+    /**
+     *
+     * @param traderId id of the trader to get the open orders of
+     * @return List of open orders entered by the trader with id traderId.
+     */
     public List<Order> getOrdersForTrader(long traderId){
         return orders.findByTraderId(traderId);
     }

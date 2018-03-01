@@ -7,7 +7,6 @@ class Order {
       this.bid = bid;
       this.type = type;
     }
-  }
-  
-  export default Order;
-  
+}
+
+export default Order;

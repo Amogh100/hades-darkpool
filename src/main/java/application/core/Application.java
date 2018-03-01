@@ -7,6 +7,9 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+/**
+ * Config to allow for cross origin requests (useful for testing )
+ */
 @Configuration
 @EnableWebMvc
 class WebConfig extends WebMvcConfigurerAdapter {
@@ -16,6 +19,9 @@ class WebConfig extends WebMvcConfigurerAdapter {
     }
 }
 
+/**
+ * Main entry point for Spring Boot Application
+ */
 @SpringBootApplication
 public class Application {
 
