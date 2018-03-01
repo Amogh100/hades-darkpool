@@ -5,8 +5,8 @@ System Requirements:
 Is cross-platform (Windows, OS X, Linux), although it has been tested the most on Linux.
 
 Dependencies/Tools needed:
-Java JDK/JRE 8+__
-Maven 3 __
+Java JDK/JRE 8+<br />
+Maven 3 <br />
 
 Ensure PostgresSQL is downloaded on your environment, and a database with the name hadesmaster is created.
 Create a username/password in Postgres to access this database. Before you run anything, create the environment variables
