@@ -9,6 +9,10 @@ import Order from "./order";
 class OrderEntry extends Component {
   constructor(props) {
     super(props);
+    /**
+     * Not ideal, hard coded values will eventually have to get this
+     * data from the service.
+     */
     this.validOrderTypes = ["MARKET", "LIMIT"];
     this.validAssets = ["BTC", "ETH", "XRP", "LTC"];
     this.state = {
@@ -25,8 +29,12 @@ class OrderEntry extends Component {
     this.enterOrder = this.enterOrder.bind(this);
   }
 
+  /**
+   * 
+   * @param {*} eventKey needed for react-bootstrap event identification (not used here)
+   */
   enterOrder(eventKey) {
-    console.log("Entering order!");
+    //Set bid boolean based on what the user has selected
     var bid = false;
     if (this.state.side === "Buy") {
       bid = true;
@@ -39,24 +47,44 @@ class OrderEntry extends Component {
       bid,
       this.state.orderType
     );
-    console.log(JSON.stringify(order));
+    //Send order to post endpoint.
     axios
       .post("http://localhost:8080/order", order)
       .then(response => alert(response.data.message));
   }
 
+  /**
+   * 
+   * @param {*} eventKey unique identifier for event
+   * Updates state based on the orderType chosen 
+   */
   onTypeSelect(eventKey) {
     this.setState({ orderType: eventKey, orderPrice: 0.0 });
   }
 
+  /**
+   * 
+   * @param {*} eventKey unique identifier for event
+   * Updates state based on the side chosen
+   */
   onSideSelect(eventKey) {
     this.setState({ side: eventKey });
   }
 
+  /**
+   * 
+   * @param {*} eventKey unique identifier for event
+   * Updates state based on the asset chosen.
+   */
   onAssetSelect(eventKey) {
     this.setState({ asset: eventKey });
   }
 
+  /** 
+   * Price is only relevant for limit orders (market orders will get
+   * entered in the order book when the best bid/ask is discovered but this 
+   * is hidden to the user)
+  */
   getOrderPriceComponent() {
     if (this.state.orderType === "LIMIT") {
       return (
@@ -75,6 +103,9 @@ class OrderEntry extends Component {
     }
   }
 
+  /** 
+   * If the order type is valid display the input box for size.
+  */
   getSizeComponent() {
     if (this.validOrderTypes.some(type => type === this.state.orderType)) {
       return (
@@ -90,7 +121,9 @@ class OrderEntry extends Component {
       );
     }
   }
-
+  /** 
+   * Generate menu options for order type
+  */
   getOrderTypeComponents() {
     var components = [];
     for (var i = 0; i < this.validOrderTypes.length; i++) {
@@ -106,6 +139,9 @@ class OrderEntry extends Component {
     return components;
   }
 
+  /** 
+   * Generate menu options for the various assets
+  */
   getAssetComponents() {
     var components = [];
     for (var i = 0; i < this.validAssets.length; i++) {
@@ -118,10 +154,15 @@ class OrderEntry extends Component {
     return components;
   }
 
+  /** 
+   * Main method for a React component that actually generates
+   * the html components.
+  */
   render() {
     let price = this.getOrderPriceComponent();
     let size = this.getSizeComponent();
     let types = this.getOrderTypeComponents();
+    //Basically create OrderType, Side, Currency, and Submission buttons.
     return (
       <div class="container">
         <div>
