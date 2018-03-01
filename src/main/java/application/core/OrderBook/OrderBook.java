@@ -45,6 +45,8 @@ public class OrderBook {
             }
             existingBidsAtPriceLevel.add(order.getOrderId());
             bids.put(price, existingBidsAtPriceLevel);
+            bidPrices.add(price);
+
         }
         else{
             LinkedList<Long> existingAsksAtPriceLevel = asks.get(price);
@@ -53,6 +55,7 @@ public class OrderBook {
             }
             existingAsksAtPriceLevel.add(order.getOrderId());
             asks.put(price, existingAsksAtPriceLevel);
+            askPrices.add(price);
         }
         return true;
     }
