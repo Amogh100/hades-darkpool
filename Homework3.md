@@ -1,0 +1,14 @@
+1.) Goal (as per the original proposal) "Server that accepts orders over REST endpoint “/order”and puts them in an order book. 
+Simple Order Entry Form. (No matching algorithm yet)"</br>
+2.) I have basically accomplished the goal for this homework, as the code currently has a simple order entry form that allows a (single)
+user to enter orders and puts it in a single order book. This was a relatively straightforward task. The only modification for this
+was an additional feature I added that displays a table view of all open orders. This was done so that I can see all the orders
+in the database without manually logging into the postgres instance and doing a "SELECT * from orders". This is going to have to get done
+in the future anyways, when querying open orders for a given user so I thought just to go ahead and do it early. The more complex work will happen
+in the next part, where there will be multiple order books for the various assets (it makes no sense/is impossible to only have 1 for matching all),
+managing multiple users and then the actual matching algorithm. More on this on the next part of this document.</br>
+3.) HW4 Goal (as per the original proposal) "Implement Matching Algorithm. User Validation.". There are no changes specified I would
+like to make to this plan. I do want to specify more on the matching algorithm. This is a price-time priority algorithm, which essentially
+manages a list of orders at a given price level (this list is structured so that orders are sorted by time of arrival) and when an order on the opposite side (so the opposite side for a BUY is a SELL and vice versa) matches the 
+price or better comes in and then begins filling orders so long as the crossing order has volume and is within its limit price if it's a 
+limit order.
