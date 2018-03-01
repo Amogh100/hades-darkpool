@@ -10,8 +10,16 @@ Maven 3 <br />
 Node version 8.9.1 <br />
 NPM version 5.5.1 <br />
 
-
 Ensure PostgresSQL is downloaded on your environment, and a database with the name hadesmaster is created.
 Create a username/password in Postgres to access this database. Before you run anything, create the environment variables
-POSTGRES_USERNAME and POSTGRES_PASSWORD corresponding to the hadesmaster database. As of now this database simply refers to this local postgres instance running on port 5432.
+POSTGRES_USERNAME and POSTGRES_PASSWORD corresponding to the hadesmaster database. As of now this database simply refers to this local postgres instance running on port 5432. <br />
+
+Building/Running the project <br />
+To run the Spring boot app, build the project with mvn clean install.
+Then run java -jar darkpool-{version_num}-SNAPSHOT.jar The server should now be running on localhost port 8080.
+
+To run the client cd into the hades-client project. Run npm install to donwload the various JS dependencies. Then
+run npm start. The client app should be running on localhost port 3000. Navigate in your web browser to http://localhost:3000 to make sure.
+
+
 
