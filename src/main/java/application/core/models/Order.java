@@ -45,37 +45,65 @@ public class Order {
      * @param bid Boolean representing if the order is a bid or ask. True if bid.
      */
 
-     public Order(long traderId, String ticker, double size, boolean bid, OrderType type, double price, long orderId){
-         this.traderId = traderId;
-         this.ticker = ticker;
-         this.size = size;
-         this.bid = bid;
-         this.type = type;
-         this.price = price;
-         this.orderId = orderId;
-     }
+    public Order(long traderId, String ticker, double size, boolean bid, OrderType type, double price, long orderId){
+        this.traderId = traderId;
+        this.ticker = ticker;
+        this.size = size;
+        this.bid = bid;
+        this.type = type;
+        this.price = price;
+        this.orderId = orderId;
+    }
 
-     public Order(){}
+    public Order(){}
 
-     public long getTraderId(){
-         return traderId;
-     }
+    public long getTraderId(){
+        return traderId;
+    }
 
-     public String getTicker(){
-         return ticker;
-     }
+    public String getTicker(){
+        return ticker;
+    }
 
-     public double getSize(){
-         return size;
-     }
+    public double getSize(){
+        return size;
+    }
 
-     public boolean isBid(){
-         return bid;
-     }
+    public boolean isBid(){
+        return bid;
+    }
 
-     public OrderType getType(){return type;}
+    public OrderType getType(){return type;}
 
-     public double getPrice(){return price;}
+    public double getPrice(){return price;}
 
-     public long getOrderId(){return orderId;}
+    public long getOrderId(){return orderId;}
+
+    public void setOrderId(long orderId) {
+        this.orderId = orderId;
+    }
+
+    public void setTraderId(long traderId) {
+        this.traderId = traderId;
+    }
+
+    public void setTicker(String ticker) {
+        this.ticker = ticker;
+    }
+
+    public void setSize(double size) {
+        this.size = size;
+    }
+
+    public void setBid(boolean bid) {
+        this.bid = bid;
+    }
+
+    public void setType(OrderType type) {
+        this.type = type;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
 }
