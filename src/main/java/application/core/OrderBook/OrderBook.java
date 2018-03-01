@@ -2,19 +2,29 @@ package application.core.OrderBook;
 
 import application.core.models.Order;
 
-import java.util.LinkedList;
-import java.util.TreeMap;
+import java.util.*;
 
 public class OrderBook {
 
-    //Maintain a tree map, mapping from price levels to the order ids at that price level.
-    //This will allow for best bid/best ask queries for O(1). Although inserts will be O(log n).
-    private TreeMap<Double, LinkedList<Long>> bids;
-    private TreeMap<Double, LinkedList<Long>> asks;
+    /**
+     * O(1) to get the orders associated with a price level. Use additional
+     * O(N) space to store just the prices in a priority queue for both bids
+     * and asks so that bestBid and bestAsk queries are also O(1)
+     */
+    private HashMap<Double, LinkedList<Long>> bids;
+    private HashMap<Double, LinkedList<Long>> asks;
+
+    //Want max heap for bids
+    private PriorityQueue<Double> bidPrices;
+
+    //Min heap for asks
+    private PriorityQueue<Double> askPrices;
 
     public OrderBook(){
-        this.bids = new TreeMap<>();
-        this.asks = new TreeMap<>();
+        this.bids = new HashMap();
+        this.asks = new HashMap();
+        this.bidPrices = new PriorityQueue<>(Collections.reverseOrder());
+        this.askPrices = new PriorityQueue<>();
     }
 
     /**
@@ -51,14 +61,14 @@ public class OrderBook {
      * Returns the best bid in the order book.
      */
     public double getBestBid(){
-        return bids.lastKey();
+        return bidPrices.poll();
     }
 
     /**
      * Returns the best ask in the order book
      */
     public double getBestAsk(){
-        return asks.firstKey();
+        return askPrices.poll();
     }
 
 
