@@ -12,3 +12,4 @@ like to make to this plan. I do want to specify more on the matching algorithm. 
 manages a list of orders at a given price level (this list is structured so that orders are sorted by time of arrival) and when an order on the opposite side (so the opposite side for a BUY is a SELL and vice versa) matches the 
 price or better comes in and then begins filling orders so long as the crossing order has volume and is within its limit price if it's a 
 limit order. Moreover, there should be a separate order book per asset (so an orderbook for BTC, one for ETH, etc.). For more info and a specific example of the matching process refer to the Price-time priority/FIFO answer to this stack overflow question asking about various order matching algorithms. https://stackoverflow.com/questions/13112062/which-are-the-order-matching-algorithms-most-commonly-used-by-electronic-financi</br></br></br>
+![image](https://postimg.org/image/o5hzd5csr/)
