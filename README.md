@@ -7,7 +7,7 @@ Is cross-platform (Windows, OS X, Linux), although it has been tested the most o
 Dependencies/Tools needed:
 Java JDK/JRE 8+<br />
 Maven 3 <br />
-Node version 8.9.1 <br />
+Node.js version 8.9.1 <br />
 NPM version 5.5.1 <br />
 
 Ensure PostgresSQL is downloaded on your environment, and a database with the name hadesmaster is created.
