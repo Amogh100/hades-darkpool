@@ -3,9 +3,13 @@ package application.core.OrderBook;
 import application.core.models.Order;
 
 import java.util.*;
+import java.util.concurrent.BlockingQueue;
 
 public class OrderBook {
 
+    private final String ticker;
+    private final long maxDepth;
+    private final BlockingQueue<Order> orderQueue;
     /**
      * O(1) to get the orders associated with a price level. Use additional
      * O(N) space to store just the prices in a priority queue for both bids
@@ -20,7 +24,10 @@ public class OrderBook {
     //Min heap for asks
     private PriorityQueue<Double> askPrices;
 
-    public OrderBook(){
+    public OrderBook(String ticker, long maxDepth, BlockingQueue<Order> orderQueue){
+        this.ticker = ticker;
+        this.maxDepth = maxDepth;
+        this.orderQueue = orderQueue;
         this.bids = new HashMap();
         this.asks = new HashMap();
         this.bidPrices = new PriorityQueue<>(Collections.reverseOrder());

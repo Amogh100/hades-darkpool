@@ -2,7 +2,6 @@ package application.core.models.messages;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-
 public class ApiMessage {
 
     @JsonProperty("success")

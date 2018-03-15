@@ -1,9 +1,13 @@
 import application.core.OrderBook.OrderBook;
+import application.core.OrderBook.OrderBookFactory;
+import application.core.OrderBook.OrderQueue;
 import application.core.models.Order;
 import application.core.models.OrderType;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+
+import java.util.concurrent.BlockingQueue;
 
 public class OrderBookTests {
 
@@ -11,7 +15,8 @@ public class OrderBookTests {
 
     @BeforeClass
     public static void setup(){
-        book = new OrderBook();
+        BlockingQueue<Order> queue = OrderQueue.getQueueInstance();
+        book = OrderBookFactory.createNewOrderbook("BTC", 100, queue);
     }
 
     @Test
