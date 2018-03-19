@@ -96,7 +96,6 @@ public class OrderBook {
                     if (currOrderQty > orderSize) {
                         currOrder.setSize(currOrderQty - orderSize);
                         order.setSize(0);
-                        System.out.println("Updating crossing order" + order.getOrderId() + " size to " + order.getSize());
                         resetOrdersAndPriceLevels(ordersAtBestAskBid, i, currPriceLevel);
                         printSnapshot();
                         return;
