@@ -62,7 +62,7 @@ public class OrderBook {
         double orderPrice = order.getPrice();
         double orderSize = order.getSize();
         boolean isBid = order.isBid();
-        Double currPriceLevel = null;
+        Double currPriceLevel;
         if (isBid) {
             currPriceLevel = getBestAsk();
         } else {
@@ -86,35 +86,29 @@ public class OrderBook {
     }
 
     private void processAtPriceLevel(Order order, Double currPriceLevel, Double orderPrice, Double orderSize) {
-        if (currPriceLevel != null && ((currPriceLevel <= orderPrice && order.isBid()) ||
-                                        (currPriceLevel >= orderPrice && !order.isBid()))) {
+        if (currPriceLevel != null && crosses(orderPrice, currPriceLevel, order.isBid())) {
             ArrayList < Order > ordersAtBestAskBid = priceLevels.get(currPriceLevel);
-            System.out.println("HERE!");
-            while (ordersAtBestAskBid != null && ((currPriceLevel <= orderPrice && order.isBid()) ||
-                                               (currPriceLevel >= orderPrice && !order.isBid()))) {
+            while (ordersAtBestAskBid != null && crosses(orderPrice, currPriceLevel, order.isBid())) {
                 //ToDo: Instead of printing snapshot, generate TradeReports.
                 for (int i = 0; i < ordersAtBestAskBid.size(); i++) {
                     Order currOrder = ordersAtBestAskBid.get(i);
                     double currOrderQty = currOrder.getSize();
                     if (currOrderQty > orderSize) {
-                        System.out.println("CASE 1");
                         currOrder.setSize(currOrderQty - orderSize);
                         order.setSize(0);
-                        ordersAtBestAskBid = new ArrayList<>(ordersAtBestAskBid.subList(i, ordersAtBestAskBid.size()));
-                        priceLevels.put(currPriceLevel, ordersAtBestAskBid);
+                        System.out.println("Updating crossing order" + order.getOrderId() + " size to " + order.getSize());
+                        resetOrdersAndPriceLevels(ordersAtBestAskBid, i, currPriceLevel);
                         printSnapshot();
                         return;
                     } else if (currOrderQty == orderSize) {
-                        System.out.println("CASE 2");
-                        ordersAtBestAskBid = new ArrayList<>(ordersAtBestAskBid.subList(i + 1, ordersAtBestAskBid.size()));
-                        priceLevels.put(currPriceLevel, ordersAtBestAskBid);
+                        resetOrdersAndPriceLevels(ordersAtBestAskBid, i + 1, currPriceLevel);
                         order.setSize(0);
                         currOrder.setSize(0);
                         printSnapshot();
                         return;
                     } else {
-                        System.out.println("CASE 3");
                         order.setSize(orderSize - currOrderQty);
+                        orderSize = order.getSize();
                         currOrder.setSize(0);
                         printSnapshot();
                     }
@@ -133,7 +127,7 @@ public class OrderBook {
                 }
                 ordersAtBestAskBid = priceLevels.get(currPriceLevel);
             }
-            if (orderSize > 0) {
+            if (order.getSize() > 0) {
                 addOrderAtPriceLevel(order, orderPrice);
                 printSnapshot();
             }
@@ -144,6 +138,19 @@ public class OrderBook {
         }
     }
 
+    private void resetOrdersAndPriceLevels(ArrayList<Order> ordersAtBestAskBid, int i, double currPriceLevel) {
+        if(i == ordersAtBestAskBid.size()){
+            deletePriceLevel(currPriceLevel);
+        }
+        else {
+            ordersAtBestAskBid.subList(0, i).clear();
+        }
+    }
+
+    private void deletePriceLevel(Double currPriceLevel) {
+        priceLevels.remove(currPriceLevel);
+    }
+
     public void printSnapshot(){
         for(HashMap.Entry<Double, ArrayList<Order>> en: priceLevels.entrySet()){
             System.out.println("Price Level " + en.getKey());
@@ -151,6 +158,10 @@ public class OrderBook {
                 System.out.println("Order " + o.getOrderId() + " " + getBid(o) + " size: " + o.getSize());
             }
         }
+    }
+
+    private boolean crosses(Double orderPrice, Double crossedPrice, boolean bid){
+        return (crossedPrice <= orderPrice && bid) || (crossedPrice >= orderPrice && !bid);
     }
 
 
