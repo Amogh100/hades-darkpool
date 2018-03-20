@@ -127,14 +127,7 @@ public class OrderBook {
                 if(ordersAtBestAskBid.isEmpty()){
                     deletePriceLevel(currPriceLevel);
                 }
-                if(order.isBid()){
-                    askPrices.poll();
-                    currPriceLevel = getBestAsk();
-                }
-                else{
-                    bidPrices.poll();
-                    currPriceLevel = getBestBid();
-                }
+                currPriceLevel = getNewPriceLevel(order);
                 ordersAtBestAskBid = priceLevels.get(currPriceLevel);
             }
             if (order.getSize() > 0) {
@@ -201,5 +194,17 @@ public class OrderBook {
         return priceLevels.containsKey(priceLevel);
     }
 
+    private double getNewPriceLevel(Order order){
+        Double newPriceLevel = null;
+        if(order.isBid()){
+            askPrices.poll();
+            newPriceLevel = getBestAsk();
+        }
+        else{
+            bidPrices.poll();
+            newPriceLevel = getBestBid();
+        }
+        return newPriceLevel;
+    }
 
 }
