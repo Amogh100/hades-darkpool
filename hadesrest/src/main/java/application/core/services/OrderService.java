@@ -48,6 +48,8 @@ public class OrderService {
 
             ApiMessage msg = messageSerializer.readValue(res, ApiMessage.class);
 
+            return msg;
+
         } catch (IOException e) {
             e.printStackTrace();
         }

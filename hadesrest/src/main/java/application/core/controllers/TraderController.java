@@ -1,11 +1,13 @@
 package application.core.controllers;
 
+import application.core.repositories.TraderRepository;
 import application.core.security.TokenManager;
 import application.core.services.TraderDetailsService;
 import jdk.nashorn.internal.objects.AccessorPropertyDescriptor;
 import models.entities.Trader;
 import models.messages.ApiMessage;
 import models.messages.SignInRequest;
+import models.messages.TraderInfoMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,6 +36,9 @@ public class TraderController {
     @Autowired
     private TokenManager tokenManager;
 
+    @Autowired
+    private TraderRepository traderRepository;
+
     @PostMapping(value = "/user/signIn")
     public ResponseEntity<ApiMessage> signIn(@RequestBody SignInRequest signInRequest){
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(signInRequest.getUsername(), signInRequest.getPassword());
@@ -41,18 +46,21 @@ public class TraderController {
         SecurityContextHolder.getContext().setAuthentication(auth);
         UserDetails details = traderDetailsService.loadUserByUsername(signInRequest.getUsername());
         String tokenString = tokenManager.createToken(details);
-        return ResponseEntity.ok(new ApiMessage(true, tokenString));
-    }
+        Trader t = traderRepository.findByUsername(signInRequest.getUsername());
+        return ResponseEntity.ok(new TraderInfoMessage(t.getId(), t.getAccount(),
+                t.getUsername(),true,
+                tokenString));    }
 
     @PostMapping(value = "/user/signUp")
     public ResponseEntity<ApiMessage> signUp(@RequestBody Trader trader) throws AuthenticationException {
-        Date currentTime = new Date(System.currentTimeMillis());
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String hashedPassword = passwordEncoder.encode(trader.getPassword());
         Trader newTrader = new Trader(trader.getUsername(), hashedPassword);
         try {
             traderDetailsService.save(newTrader);
-            return ResponseEntity.ok(new ApiMessage(true, "User Succesfully Registered!"));
+            return ResponseEntity.ok(new TraderInfoMessage(newTrader.getId(), newTrader.getAccount(),
+                    newTrader.getUsername(),true,
+                                                            "User Succesfully Registered!"));
         } catch (Exception e){
             return ResponseEntity.ok(new ApiMessage(false, "Username already exists!"));
         }

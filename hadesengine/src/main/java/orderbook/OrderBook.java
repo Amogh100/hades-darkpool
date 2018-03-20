@@ -8,6 +8,7 @@ public class OrderBook {
 
     private final String ticker;
     private final long maxDepth;
+    private static long ORDER_ID_COUNT;
 
     HashMap < Double, ArrayList < Order >> priceLevels;
 
@@ -68,6 +69,7 @@ public class OrderBook {
         } else {
             currPriceLevel = getBestBid();
         }
+        order.setOrderbookId(ORDER_ID_COUNT);
         processAtPriceLevel(order, currPriceLevel,orderPrice, orderSize);
     }
 
@@ -93,7 +95,9 @@ public class OrderBook {
                 for (int i = 0; i < ordersAtBestAskBid.size(); i++) {
                     Order currOrder = ordersAtBestAskBid.get(i);
                     double currOrderQty = currOrder.getSize();
+                    //ToDo: refactor
                     if (currOrderQty > orderSize) {
+                        System.out.println("case 1");
                         currOrder.setSize(currOrderQty - orderSize);
                         order.setSize(0);
                         order.setFilled(true);
@@ -101,6 +105,7 @@ public class OrderBook {
                         printSnapshot();
                         return;
                     } else if (currOrderQty == orderSize) {
+                        System.out.println("case 2");
                         resetOrdersAndPriceLevels(ordersAtBestAskBid, i + 1, currPriceLevel);
                         order.setSize(0);
                         currOrder.setSize(0);
@@ -109,16 +114,18 @@ public class OrderBook {
                         printSnapshot();
                         return;
                     } else {
+                        System.out.println("case 3");
                         order.setSize(orderSize - currOrderQty);
                         orderSize = order.getSize();
                         currOrder.setSize(0);
                         currOrder.setFilled(true);
+                        ordersAtBestAskBid.remove(i);
                         printSnapshot();
                     }
                 }
                 //Continue to next price level. Reset best ask.
                 if(ordersAtBestAskBid.isEmpty()){
-                    priceLevels.remove(currPriceLevel);
+                    deletePriceLevel(currPriceLevel);
                 }
                 if(order.isBid()){
                     askPrices.poll();
@@ -158,7 +165,7 @@ public class OrderBook {
         for(HashMap.Entry<Double, ArrayList<Order>> en: priceLevels.entrySet()){
             System.out.println("Price Level " + en.getKey());
             for(Order o: en.getValue()){
-                System.out.println("Order " + o.getOrderId() + " " + getBid(o) + " size: " + o.getSize());
+                System.out.println("Order " + o.getOrderBookId() + " " + getBid(o) + " size: " + o.getSize());
             }
         }
     }

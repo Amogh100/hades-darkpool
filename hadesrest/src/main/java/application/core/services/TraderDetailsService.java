@@ -33,4 +33,5 @@ public class TraderDetailsService implements UserDetailsService{
         }
         traderRepository.save(newTrader);
     }
+
 }

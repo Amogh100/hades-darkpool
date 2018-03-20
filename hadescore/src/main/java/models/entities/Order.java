@@ -17,7 +17,9 @@ public class Order {
 
     @Id
     @GeneratedValue
-    private long orderId;
+    private long globalOrderId;
+
+    private long orderbookId;
 
 //    @JsonProperty(required = true)
     private long traderId;
@@ -55,7 +57,7 @@ public class Order {
         this.bid = bid;
         this.type = type;
         this.price = price;
-        this.orderId = orderId;
+        this.globalOrderId = orderId;
         this.filled = false;
     }
 
@@ -81,10 +83,10 @@ public class Order {
 
     public double getPrice(){return price;}
 
-    public long getOrderId(){return orderId;}
+    public long getGlobalOrderId(){return globalOrderId;}
 
-    public void setOrderId(long orderId) {
-        this.orderId = orderId;
+    public void setGlobalOrderId(long globalOrderId) {
+        this.globalOrderId = globalOrderId;
     }
 
     public void setTraderId(long traderId) {
@@ -117,5 +119,11 @@ public class Order {
 
     public void setFilled(boolean filled) {
         this.filled = filled;
+    }
+
+    public void setOrderbookId(long orderbookId) {this.orderbookId = orderbookId;}
+
+    public long getOrderBookId() {
+        return orderbookId;
     }
 }

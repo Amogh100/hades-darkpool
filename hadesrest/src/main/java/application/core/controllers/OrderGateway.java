@@ -1,5 +1,6 @@
 package application.core.controllers;
 
+import application.core.security.TokenManager;
 import application.core.services.OrderService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,8 +22,12 @@ import java.util.concurrent.TimeoutException;
 public class OrderGateway {
 
     private final ObjectWriter objectWriter;
+
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private TokenManager tokenManager;
 
     public OrderGateway(){
         this.objectWriter = new ObjectMapper().writer();
@@ -36,20 +41,19 @@ public class OrderGateway {
      */
     @PostMapping(value="/order", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiMessage> createOrder(@Valid @RequestBody Order order) throws TimeoutException {
-
         try {
             ApiMessage res = orderService.processOrder(objectWriter.writeValueAsString(order));
             if(res.getSuccess()){
                 orderService.saveOrder(order);
             }
+            else{
+                return ResponseEntity.badRequest().body(new ApiMessage(false, "failed to process order"));
+            }
             return ResponseEntity.ok().body(res);
 
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            return ResponseEntity.badRequest().body(new ApiMessage(false, "failed to process order"));
         }
-
-        return ResponseEntity.badRequest().body(new ApiMessage(false, "failed to process order"));
-
     }
 
     /**

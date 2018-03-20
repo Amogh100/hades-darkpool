@@ -69,4 +69,7 @@ public class Trader {
         account.addCapital(capital);
     }
 
+    public Account getAccount() {
+        return account;
+    }
 }

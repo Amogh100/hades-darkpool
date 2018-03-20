@@ -14,7 +14,7 @@ public class OrderTest {
         TestCase.assertEquals(testLimit.getTicker(), "BTC");
         TestCase.assertEquals(testLimit.getTraderId(), 1);
         TestCase.assertEquals(testLimit.getPrice(), 10400, 0);
-        TestCase.assertEquals(testLimit.getOrderId(),1);
+        TestCase.assertEquals(testLimit.getGlobalOrderId(),1);
     }
 
 }

@@ -41,7 +41,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(details, null, details.getAuthorities());
                 auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
                 SecurityContextHolder.getContext().setAuthentication(auth);
-                System.out.println("Made it!");
             }
         }
         chain.doFilter(request, response);
