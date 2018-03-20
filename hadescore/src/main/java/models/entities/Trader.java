@@ -2,12 +2,8 @@ package models.entities;
 
 import models.Position;
 
+import javax.persistence.*;
 import java.util.HashSet;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 @Entity
 public class Trader {
@@ -20,6 +16,13 @@ public class Trader {
     private String username;
     private String password;
     private HashSet<Position> positions;
+
+    @OneToOne
+    public Account account;
+
+
+
+
 
     public Trader(){}
 
@@ -37,6 +40,7 @@ public class Trader {
         return username;
     }
 
+
     public String getPassword(){
         return password;
     }
@@ -52,4 +56,17 @@ public class Trader {
     public void setPassword(String password){
         this.password = password;
     }
+
+    public void addPosition(Position pos){
+        positions.add(pos);
+    }
+
+    public double getCapital(){
+        return account.getCapital();
+    }
+
+    public void addCapital(double capital){
+        account.addCapital(capital);
+    }
+
 }

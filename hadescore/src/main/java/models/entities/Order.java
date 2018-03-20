@@ -19,7 +19,7 @@ public class Order {
     @GeneratedValue
     private long orderId;
 
-    @JsonProperty(required = true)
+//    @JsonProperty(required = true)
     private long traderId;
 
     @JsonProperty(required = true)
@@ -38,6 +38,8 @@ public class Order {
     @JsonProperty(required = true)
     private double price;
 
+    private boolean filled;
+
 
     /**
      * @param traderId Source trader making the order
@@ -54,6 +56,7 @@ public class Order {
         this.type = type;
         this.price = price;
         this.orderId = orderId;
+        this.filled = false;
     }
 
     public Order(){}
@@ -106,5 +109,13 @@ public class Order {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public boolean isFilled() {
+        return filled;
+    }
+
+    public void setFilled(boolean filled) {
+        this.filled = filled;
     }
 }

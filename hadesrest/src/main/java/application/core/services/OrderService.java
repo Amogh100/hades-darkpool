@@ -46,12 +46,16 @@ public class OrderService {
         try {
             String res = orderQueueService.processOrder(orderMessage);
 
-            return messageSerializer.readValue(res, ApiMessage.class);
+            ApiMessage msg = messageSerializer.readValue(res, ApiMessage.class);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void saveOrder(Order o) {
+        orders.save(o);
     }
 
 }

@@ -39,6 +39,9 @@ public class OrderGateway {
 
         try {
             ApiMessage res = orderService.processOrder(objectWriter.writeValueAsString(order));
+            if(res.getSuccess()){
+                orderService.saveOrder(order);
+            }
             return ResponseEntity.ok().body(res);
 
         } catch (JsonProcessingException e) {

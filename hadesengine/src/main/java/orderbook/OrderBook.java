@@ -86,9 +86,9 @@ public class OrderBook {
     }
 
     private void processAtPriceLevel(Order order, Double currPriceLevel, Double orderPrice, Double orderSize) {
-        if (currPriceLevel != null && crosses(orderPrice, currPriceLevel, order.isBid())) {
+        if (currPriceLevel != null && validLimitCross(orderPrice, currPriceLevel, order.isBid())) {
             ArrayList < Order > ordersAtBestAskBid = priceLevels.get(currPriceLevel);
-            while (ordersAtBestAskBid != null && crosses(orderPrice, currPriceLevel, order.isBid())) {
+            while (ordersAtBestAskBid != null && validLimitCross(orderPrice, currPriceLevel, order.isBid())) {
                 //ToDo: Instead of printing snapshot, generate TradeReports.
                 for (int i = 0; i < ordersAtBestAskBid.size(); i++) {
                     Order currOrder = ordersAtBestAskBid.get(i);
@@ -96,6 +96,7 @@ public class OrderBook {
                     if (currOrderQty > orderSize) {
                         currOrder.setSize(currOrderQty - orderSize);
                         order.setSize(0);
+                        order.setFilled(true);
                         resetOrdersAndPriceLevels(ordersAtBestAskBid, i, currPriceLevel);
                         printSnapshot();
                         return;
@@ -103,12 +104,15 @@ public class OrderBook {
                         resetOrdersAndPriceLevels(ordersAtBestAskBid, i + 1, currPriceLevel);
                         order.setSize(0);
                         currOrder.setSize(0);
+                        order.setFilled(true);
+                        currOrder.setFilled(true);
                         printSnapshot();
                         return;
                     } else {
                         order.setSize(orderSize - currOrderQty);
                         orderSize = order.getSize();
                         currOrder.setSize(0);
+                        currOrder.setFilled(true);
                         printSnapshot();
                     }
                 }
@@ -159,7 +163,7 @@ public class OrderBook {
         }
     }
 
-    private boolean crosses(Double orderPrice, Double crossedPrice, boolean bid){
+    private boolean validLimitCross(Double orderPrice, Double crossedPrice, boolean bid){
         return (crossedPrice <= orderPrice && bid) || (crossedPrice >= orderPrice && !bid);
     }
 
