@@ -10,15 +10,26 @@ Java JDK/JRE 8+<br />
 Maven 3 <br />
 Node.js version 8.9.1 <br />
 NPM version 5.5.1 <br />
+Docker https://docs.docker.com/ for docs < br />
+rabbitmq Docker image https://hub.docker.com/_/rabbitmq/ <br/>
 
 Ensure PostgresSQL is downloaded on your environment, and a database with the name hadesmaster is created.
 Create a username/password in Postgres to access this database. Before you run anything, create the environment variables
-POSTGRES_USERNAME and POSTGRES_PASSWORD corresponding to the hadesmaster database. As of now this database simply refers to this local postgres instance running on port 5432. <br />
+POSTGRES_USERNAME and POSTGRES_PASSWORD corresponding to the hadesmaster database. As of now this database simply refers to this local postgres instance running on port 5432. Run the rabbitmq docker container, along with management UI which is running on port 15672. The docker container should have an IP address of 172.17.0.2. See here https://stackoverflow.com/questions/27937185/assign-static-ip-to-docker-container <br />
 
 Building/Running the project <br />
-Open your terminal.
-To run the Spring boot app, build the project with "mvn clean install" in the project's root directory..
-Then run "java -jar darkpool-{version_num}-SNAPSHOT.jar" The server should now be running on localhost port 8080.
+
+In the root directory of the project run mvn clean install, this will build the core library(which has various datastructures for both the engine and rest api), and then build the engine and rest api.
+
+
+Running Hades Engine <br />
+The hades engine is the main project that listens for orders via RPC and RabbitMq. Run with java -jar target/hadesengine-{vesion number with dependencies}.jar
+
+
+Running Hades Rest API <br />
+The hades rest api is a Spring Boot project that exposes HTTP endpoints for a client application.To run it, do java -jar target/hadesrest-{version num}.jar
+
+
 
 To run the client "cd" into the hades-client folder. Run "npm install" to donwload the various JS dependencies. Then
 run "npm start". The client app should be running on localhost port 3000. Navigate in your web browser to http://localhost:3000 to make sure.
