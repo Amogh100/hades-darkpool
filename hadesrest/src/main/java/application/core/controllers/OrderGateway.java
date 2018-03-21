@@ -77,7 +77,7 @@ public class OrderGateway {
 
     /**
      *
-     * @return A list of open orders for the trader with id traderId
+     * @return A list of open orders for the currently signed in trader.
      */
     @GetMapping(value="/order", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Order>> getOrdersForTrader(){

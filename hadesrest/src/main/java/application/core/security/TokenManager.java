@@ -14,6 +14,8 @@ import static application.core.security.Constants.SECRET;
 
 @Component
 public class TokenManager {
+
+    //Get username from an authtoken
     public String getUsername(String authToken) {
         String username = null;
         try {
@@ -25,6 +27,7 @@ public class TokenManager {
         return username;
     }
 
+    //Gets a claim from the given authtoken
     private Claims getClaimsFromToken(String authToken) {
         Claims claims = null;
         try {
@@ -38,11 +41,22 @@ public class TokenManager {
         return claims;
     }
 
+    /**
+     *
+     * @param authToken authToken to validate
+     * @param details UserDetails to compare authToken information to.
+     * @return
+     */
     public boolean validateToken(String authToken, UserDetails details) {
         final String username = getUsername(authToken);
         return username.equals(details.getUsername()) && !isExpired(authToken);
     }
 
+    /**
+     *
+     * @param authToken authToken to check for expiry
+     * @return true if the authToken is expired
+     */
     private boolean isExpired(String authToken) {
         try {
             final Claims claims = getClaimsFromToken(authToken);
@@ -53,6 +67,11 @@ public class TokenManager {
         }
     }
 
+    /**
+     *
+     * @param userDetails UserDetail to createToken for
+     * @return
+     */
     public String createToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("sub", userDetails.getUsername());
@@ -60,6 +79,11 @@ public class TokenManager {
         return this.generateToken(claims);
     }
 
+    /**
+     * Generates a String token
+     * @param claims Mapping between fields and objects used for auth validation
+     * @return String containing JWT
+     */
     private String generateToken(Map<String, Object> claims) {
         return Jwts.builder()
                 .setClaims(claims)

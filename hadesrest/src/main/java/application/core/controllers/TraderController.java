@@ -37,6 +37,13 @@ public class TraderController {
     @Autowired
     private TraderRepository traderRepository;
 
+    /**
+     *
+     * @param signInRequest Request containing username password information
+     * @return TraderInfoMessage containing useful information for the client, such
+     * as the traderId, account information, and most importantly a JWT token in
+     * the "message" field.
+     */
     @PostMapping(value = "/user/signIn")
     public ResponseEntity<ApiMessage> signIn(@RequestBody SignInRequest signInRequest){
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(signInRequest.getUsername(), signInRequest.getPassword());
@@ -47,8 +54,16 @@ public class TraderController {
         Trader t = traderRepository.findByUsername(signInRequest.getUsername());
         return ResponseEntity.ok(new TraderInfoMessage(t.getId(), t.getAccount(),
                 t.getUsername(),true,
-                tokenString));    }
+                tokenString));
+    }
 
+    /**
+     *
+     * @param trader new Trader to register with the application
+     * @return ResponseEntity with TraderInfoMessage containing useful trader meta data.
+     * @throws AuthenticationException if there is an issue with creating the token
+     * @throws IllegalArgumentException if the username already exists
+     */
     @PostMapping(value = "/user/signUp")
     public ResponseEntity<ApiMessage> signUp(@RequestBody Trader trader) throws AuthenticationException {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -65,6 +80,10 @@ public class TraderController {
         }
     }
 
+    /**
+     * Endpoint for returning trader information
+     * @return the trader information for the currently signed in trader.
+     */
     @GetMapping(value = "/user/info")
     public ResponseEntity<ApiMessage> getTraderInfo(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

@@ -32,9 +32,6 @@ public class OrderBook {
      * Simply add order to bids and asks depending on order type.
      *
      * @Param Order order to add to order book.
-     * ToDo: Actual matching algorithm, and order book for each asset.
-     * ToDo: Updgrade market orders so that their price is updated to either the best bid or ask.
-     *
      */
 
     public boolean addOrder(Order order) {
@@ -51,6 +48,12 @@ public class OrderBook {
         return true;
     }
 
+    /**
+     * Takes a market order, updates it to a limit order
+     * where the price is the best bid/ask.
+     * @PreCondition order is a market order and asks/bids exist
+     * @param order Market order
+     */
     private void handleMarketOrder(Order order) {
         if (order.isBid()) {
             order.setPrice(getBestAsk());
@@ -60,6 +63,10 @@ public class OrderBook {
         handleLimitOrder(order);
     }
 
+    /**
+     *
+     * @param order Limit Order
+     */
     private void handleLimitOrder(Order order) {
         double orderPrice = order.getPrice();
         double orderSize = order.getSize();
@@ -74,6 +81,11 @@ public class OrderBook {
         processAtPriceLevel(order, currPriceLevel,orderPrice, orderSize);
     }
 
+    /**
+     *
+     * @param order Adds order to a price level.
+     * @param price Price level to add order.
+     */
     private void addOrderAtPriceLevel(Order order, Double price) {
         ArrayList < Order > newOrders = priceLevels.get(price);
         if(newOrders == null){
@@ -88,6 +100,13 @@ public class OrderBook {
         }
     }
 
+    /**
+     *Processes and order at a given price level
+     * @param order Order to price
+     * @param currPriceLevel priceLevel to process order at
+     * @param orderPrice price of the order
+     * @param orderSize size of the order
+     */
     private void processAtPriceLevel(Order order, Double currPriceLevel, Double orderPrice, Double orderSize) {
         if (currPriceLevel != null && validLimitCross(orderPrice, currPriceLevel, order.isBid())) {
             ArrayList < Order > ordersAtBestAskBid = priceLevels.get(currPriceLevel);
@@ -97,6 +116,9 @@ public class OrderBook {
                     Order currOrder = ordersAtBestAskBid.get(i);
                     double currOrderQty = currOrder.getSize();
                     //ToDo: refactor
+
+                    //Case where current order can completely fill crossing order, with some left over in
+                    //the current order.
                     if (currOrderQty > orderSize) {
                         System.out.println("case 1");
                         currOrder.setSize(currOrderQty - orderSize);
@@ -105,7 +127,9 @@ public class OrderBook {
                         resetOrdersAndPriceLevels(ordersAtBestAskBid, i, currPriceLevel);
                         printSnapshot();
                         return;
-                    } else if (currOrderQty == orderSize) {
+                    }
+                    //Case where current order exactly fill crossing order
+                    else if (currOrderQty == orderSize) {
                         System.out.println("case 2");
                         resetOrdersAndPriceLevels(ordersAtBestAskBid, i + 1, currPriceLevel);
                         order.setSize(0);
@@ -114,7 +138,10 @@ public class OrderBook {
                         currOrder.setFilled(true);
                         printSnapshot();
                         return;
-                    } else {
+                    }
+                    //Case where current order only partially fills
+                    //crossing order.
+                    else {
                         System.out.println("case 3");
                         order.setSize(orderSize - currOrderQty);
                         orderSize = order.getSize();
@@ -132,6 +159,7 @@ public class OrderBook {
                 ordersAtBestAskBid = priceLevels.get(currPriceLevel);
             }
             if (order.getSize() > 0) {
+                //If there's still volume remaining add the order to the price level
                 addOrderAtPriceLevel(order, orderPrice);
                 printSnapshot();
             }
@@ -142,6 +170,12 @@ public class OrderBook {
         }
     }
 
+    /**
+     * Helper to clear orders at a given price level
+     * @param ordersAtBestAskBid orders at a given price level
+     * @param i index in ordersAtBestAskBid to potentially sublist and clear
+     * @param currPriceLevel current priceLevel
+     */
     private void resetOrdersAndPriceLevels(ArrayList<Order> ordersAtBestAskBid, int i, double currPriceLevel) {
         if(i == ordersAtBestAskBid.size()){
             deletePriceLevel(currPriceLevel);
@@ -155,6 +189,9 @@ public class OrderBook {
         priceLevels.remove(currPriceLevel);
     }
 
+    /**
+     * Helper to print the orderbook snapshot.
+     */
     public void printSnapshot(){
         for(HashMap.Entry<Double, ArrayList<Order>> en: priceLevels.entrySet()){
             System.out.println("Price Level " + en.getKey());
@@ -164,6 +201,13 @@ public class OrderBook {
         }
     }
 
+    /**
+     *
+     * @param orderPrice price of potentially crossing order
+     * @param crossedPrice price being crossed
+     * @param bid if order type is bid or ask.
+     * @return
+     */
     private boolean validLimitCross(Double orderPrice, Double crossedPrice, boolean bid){
         return (crossedPrice <= orderPrice && bid) || (crossedPrice >= orderPrice && !bid);
     }
@@ -195,6 +239,12 @@ public class OrderBook {
         return priceLevels.containsKey(priceLevel);
     }
 
+    /**
+     * Removes best bid/ask from priority queue
+     * and sets this to be the new price level.
+     * @param order Order to get new price level for
+     * @return updated PriceLevel
+     */
     private double getNewPriceLevel(Order order){
         Double newPriceLevel = null;
         if(order.isBid()){
@@ -208,11 +258,19 @@ public class OrderBook {
         return newPriceLevel;
     }
 
+    /**
+     *
+     * @return true if bids exist
+     */
     public boolean bidsExist(){
         System.out.println("There are " + bidPrices.size() + " bids");
         return bidPrices.size() > 0;
     }
 
+    /**
+     *
+     * @return true if asks exist
+     */
     public boolean asksExist(){
         System.out.println("There are " + askPrices.size() + " asks");
         return askPrices.size() > 0;

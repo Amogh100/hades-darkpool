@@ -14,12 +14,23 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
+/**
+ * RPC server listening on RabbitMQ
+ * for String messages containing order information,
+ * and processes each of these messages.
+ */
 public class OrderRpcServer extends StringRpcServer {
 
     private ObjectMapper orderSerializer;
 
+    //Map between ticker and an order book
     private HashMap<String, OrderBook> orderBookMap;
 
+    /**
+     * @param channel an abstraction of a connection to an AMPQ broker.
+     * @param queueName Name of RabbitMQ queue for listening to orders
+     * @throws IOException
+     */
     public OrderRpcServer(Channel channel, String queueName) throws IOException {
         super(channel, queueName);
         this.orderSerializer = new ObjectMapper();
@@ -30,10 +41,16 @@ public class OrderRpcServer extends StringRpcServer {
         }
     }
 
-    public String handleStringCall(String request) {
-        System.out.println("Got request: " + request);
+    /**
+     *Processes a serialized order
+     * @param orderMessage String message containing order info
+     * @return
+     */
+    @Override
+    public String handleStringCall(String orderMessage) {
+        System.out.println("Got request: " + orderMessage);
         try {
-            Order order = orderSerializer.readValue(request, Order.class);
+            Order order = orderSerializer.readValue(orderMessage, Order.class);
             ApiMessage resp = OrderValidator.validate(order, orderBookMap.keySet());
             if(resp.getSuccess()){
                 OrderBook book = orderBookMap.get(order.getTicker());

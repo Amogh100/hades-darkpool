@@ -1,3 +1,8 @@
+/** 
+ * Order class represents 
+ * a simple order structure.
+*/
+
 class Order {
     constructor(price, size, ticker, bid, type) {
       this.price = price;

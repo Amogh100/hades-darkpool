@@ -1,20 +1,21 @@
-import { DropdownButton } from "react-bootstrap";
-import { MenuItem } from "react-bootstrap";
 import React, { Component } from "react";
-import styles from "./order_entry";
 import axios from "axios";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
-import LoginView from "./login_view";
-import OrderEntry from "./order_entry";
+import OrderEntry from "./OrderEntry";
+import AuthorizationService from "../services/AuthorizationService";
 
+/** 
+ * OrderView is a component for displaying open orders and capital positions.
+*/
 class OrderView extends Component {
   
   constructor(props) {
     super(props);
     this.state = { orders: [] };
-    var jwt = sessionStorage["jwt"];
-    console.log(jwt);
-    if(jwt != undefined && jwt !== null){
+    this.auth = new AuthorizationService();
+    var jwt = this.auth.getToken();
+
+    if(jwt !== undefined && jwt !== null){
       console.log("Found token");
       this.state = {validSession: true};
       axios.defaults.headers.common['Authorization'] = jwt;
@@ -26,6 +27,12 @@ class OrderView extends Component {
       setInterval(this.updateTraderState, 1000);
 
     }
+      /**
+     * Should theoretically never reach this case
+     * since this component is only routed when a valid token exists, do
+     * to componentWillMount
+     * but better safe then sorry.
+     */
     else {
       console.log("Couldn't find token!!");
       this.setState({validSession: false});
@@ -33,7 +40,15 @@ class OrderView extends Component {
 
   }
 
+  componentWillMount(){
+    if(!this.auth.validTokenExists()){
+      window.location.replace("/login");
+    }
+  }
 
+  /**
+   * This function is a scheduled function for polling for open order data.
+   */
   updateOrders() {
     axios
       .get("http://localhost:8080/order")
@@ -43,6 +58,9 @@ class OrderView extends Component {
       });
   }
 
+  /** 
+   * Scheduled function for poling for trader state information (for now just capital)
+  */
   updateTraderState(){
     axios
       .get("http://localhost:8080/user/info")
@@ -84,17 +102,13 @@ class OrderView extends Component {
           <TableHeaderColumn dataField="ticker">Ticker</TableHeaderColumn>
           <TableHeaderColumn dataField="price">Price</TableHeaderColumn>
           <TableHeaderColumn dataField="bid">Bid </TableHeaderColumn>
+          <TableHeaderColumn dataField="size">Size </TableHeaderColumn>
+
+          
         </BootstrapTable>
         </div>
         </div>;
-
-    if(this.state.validSession){
-      return mainComponent;
-    }
-    else {
-      console.log(this.state.validSession);
-      return <LoginView> </LoginView>;
-    }
+    return mainComponent;
   }
 }
 export default OrderView;

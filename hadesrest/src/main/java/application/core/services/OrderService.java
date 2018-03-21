@@ -56,6 +56,7 @@ public class OrderService {
         return null;
     }
 
+    //Save order to database
     public void saveOrder(Order o) {
         orders.save(o);
     }

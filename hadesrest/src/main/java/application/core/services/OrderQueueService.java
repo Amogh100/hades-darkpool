@@ -9,8 +9,9 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 public class OrderQueueService {
-
+    //Connection is a abstraction of a connection to rabbitmq
     private Connection connection;
+    //Abstraction of broker connection
     private Channel channel;
     private String requestQueueName = "order";
     private String replyQueueName;
@@ -18,6 +19,10 @@ public class OrderQueueService {
 
     private static  OrderQueueService orderQueueService = null;
 
+    /**
+     * Private constructor since this is a singleton class
+     * @throws IOException
+     */
     private OrderQueueService() throws IOException {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("172.17.0.2");
@@ -29,12 +34,18 @@ public class OrderQueueService {
         } catch (TimeoutException e) {
             e.printStackTrace();
         }
+
         channel = connection.createChannel();
 
         replyQueueName = channel.queueDeclare().getQueue();
+        //Construct new RpcClient
         service = new RpcClient(channel, "", requestQueueName);
     }
 
+    /**
+     * Singleton returns instance
+     * @return OrderQueueService instance
+     */
     public static OrderQueueService getServiceInstance(){
         if(orderQueueService == null){
             try {
@@ -46,6 +57,14 @@ public class OrderQueueService {
         return orderQueueService;
     }
 
+    /**
+     *
+     * @param orderString String containing order information
+     * @return returns a String that contains an ApiMessage with the result of processing
+     * in the order
+     * @throws IOException
+     * @throws TimeoutException
+     */
     public String processOrder(String orderString) throws IOException, TimeoutException {
         try {
             String res = service.stringCall(orderString);

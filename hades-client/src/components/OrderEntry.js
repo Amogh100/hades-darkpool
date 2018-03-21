@@ -2,10 +2,13 @@ import { DropdownButton } from "react-bootstrap";
 import { MenuItem } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import React, { Component } from "react";
-import styles from "./order_entry";
+import styles from "./OrderEntry";
 import axios from "axios";
-import Order from "./order";
+import Order from "./Order";
 
+/** 
+ * Component for entering in orders.
+*/
 class OrderEntry extends Component {
   constructor(props) {
     super(props);

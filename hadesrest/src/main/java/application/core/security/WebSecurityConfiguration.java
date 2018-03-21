@@ -40,6 +40,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter{
         return authenticationTokenFilter;
     }
 
+    /**
+     * Configures the various levels of security each endpoint requires
+     * @param http Security object to set rules for
+     * @throws Exception
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception{
         http.cors().and().csrf().disable().authorizeRequests()
@@ -58,6 +63,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter{
         auth.userDetailsService(traderDetailsService).passwordEncoder(bCryptPasswordEncoder);
     }
 
+    /**
+     * Configure CORS
+     * @return
+     */
     @Bean
     CorsConfigurationSource corsConfigurationSource(){
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

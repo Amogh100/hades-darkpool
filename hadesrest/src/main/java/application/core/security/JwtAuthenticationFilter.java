@@ -29,6 +29,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Autowired
     private UserDetailsService userDetailsService;
 
+    /**
+     * Used to filter for authenticated requests (containing a JWT token in Authorization header)
+     *
+     * @param request Request passed to the Filter object
+     * @param response Httpresponse that is a result of processing a given request
+     * @param chain Used to invoke next filter chain
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest)request;
