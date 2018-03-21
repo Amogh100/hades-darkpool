@@ -25,6 +25,7 @@ public class OrderBook {
         this.bidPrices = new PriorityQueue < > (Collections.reverseOrder());
         this.askPrices = new PriorityQueue < > ();
         this.priceLevels = new HashMap < > ();
+        ORDER_ID_COUNT = 0;
     }
 
     /**
@@ -53,7 +54,7 @@ public class OrderBook {
     private void handleMarketOrder(Order order) {
         if (order.isBid()) {
             order.setPrice(getBestAsk());
-        } else {
+        } else if (!order.isBid()){
             order.setPrice(getBestBid());
         }
         handleLimitOrder(order);
@@ -69,7 +70,7 @@ public class OrderBook {
         } else {
             currPriceLevel = getBestBid();
         }
-        order.setOrderbookId(ORDER_ID_COUNT);
+        order.setOrderbookId(ORDER_ID_COUNT++);
         processAtPriceLevel(order, currPriceLevel,orderPrice, orderSize);
     }
 
@@ -205,6 +206,16 @@ public class OrderBook {
             newPriceLevel = getBestBid();
         }
         return newPriceLevel;
+    }
+
+    public boolean bidsExist(){
+        System.out.println("There are " + bidPrices.size() + " bids");
+        return bidPrices.size() > 0;
+    }
+
+    public boolean asksExist(){
+        System.out.println("There are " + askPrices.size() + " asks");
+        return askPrices.size() > 0;
     }
 
 }

@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
 import './App.css';
-import logo from "./coin.png"
-import OrderEntry from './components/order_entry'
-import OrderView from './components/order_view'
+import logo from "./coin.png";
+import OrderEntry from './components/order_entry';
+import OrderView from './components/order_view';
+import LoginView from './components/login_view';
+import {Grid} from 'react-bootstrap';
+import {Row} from 'react-bootstrap';
 class App extends Component {
 
-
-  onSelectAlert(eventKey) {
-    // alert(`Alert from menu item.\neventKey: ${eventKey}`);
-  }
-
-  
   render() {
+    
     return (
       <div className="App">
         <header className="App-header">
@@ -19,13 +17,14 @@ class App extends Component {
           <h1 className="App-title">Welcome to Hades Capital</h1>
         </header>
         <div>
-        <OrderEntry>
-        </OrderEntry>
-        </div>
-        <div>
         <OrderView>
         </OrderView>
         </div>
+        {/* <Grid>
+
+        <Row className="text-center"> <LoginView> </LoginView> </Row>
+
+        </Grid> */}
               
       </div>
     );

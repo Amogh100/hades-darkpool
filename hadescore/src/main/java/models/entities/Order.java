@@ -1,5 +1,7 @@
 package models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import models.OrderType;
 
@@ -13,15 +15,17 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="orders")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Order {
 
     @Id
     @GeneratedValue
     private long globalOrderId;
 
-    private long orderbookId;
+    @JsonIgnore
+    private long orderBookId;
 
-//    @JsonProperty(required = true)
+    @JsonProperty(required = true)
     private long traderId;
 
     @JsonProperty(required = true)
@@ -40,6 +44,7 @@ public class Order {
     @JsonProperty(required = true)
     private double price;
 
+    @JsonIgnore
     private boolean filled;
 
 
@@ -121,9 +126,9 @@ public class Order {
         this.filled = filled;
     }
 
-    public void setOrderbookId(long orderbookId) {this.orderbookId = orderbookId;}
+    public void setOrderbookId(long orderBookId) {this.orderBookId = orderBookId;}
 
     public long getOrderBookId() {
-        return orderbookId;
+        return orderBookId;
     }
 }

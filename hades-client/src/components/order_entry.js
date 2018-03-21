@@ -20,8 +20,7 @@ class OrderEntry extends Component {
       orderPrice: 0.0,
       size: 0,
       side: "Side",
-      asset: "Currency",
-      traderId: 1
+      asset: "Currency"
     };
     this.onTypeSelect = this.onTypeSelect.bind(this);
     this.onSideSelect = this.onSideSelect.bind(this);
@@ -42,7 +41,6 @@ class OrderEntry extends Component {
     var order = new Order(
       this.state.orderPrice,
       this.state.size,
-      this.state.traderId,
       this.state.asset,
       bid,
       this.state.orderType

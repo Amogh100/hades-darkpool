@@ -13,18 +13,26 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private long accountId;
     private double capital;
 
     public double getCapital() {
         return capital;
     }
 
-    public long getAccountId() {
-        return accountId;
+    public long getId() {
+        return id;
     }
 
     public void addCapital(double newCapital) {
         capital += newCapital;
+    }
+
+
+    public Account(){
+        this(100000);
+    }
+
+    public Account(long capital){
+        this.capital = capital;
     }
 }

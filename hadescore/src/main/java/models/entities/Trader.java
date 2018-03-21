@@ -17,12 +17,8 @@ public class Trader {
     private String password;
     private HashSet<Position> positions;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     public Account account;
-
-
-
-
 
     public Trader(){}
 
@@ -30,6 +26,7 @@ public class Trader {
         this.username = username;
         this.password = password;
         this.positions = new HashSet<Position>();
+        this.account = new Account();
     }
 
     public long getId(){

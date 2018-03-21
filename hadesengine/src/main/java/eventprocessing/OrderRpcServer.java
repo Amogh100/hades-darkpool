@@ -3,6 +3,7 @@ package eventprocessing;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.StringRpcServer;
+import models.OrderType;
 import models.entities.Order;
 import models.messages.ApiMessage;
 import orderbook.OrderBook;
@@ -35,7 +36,14 @@ public class OrderRpcServer extends StringRpcServer {
             Order order = orderSerializer.readValue(request, Order.class);
             ApiMessage resp = OrderValidator.validate(order, orderBookMap.keySet());
             if(resp.getSuccess()){
-                orderBookMap.get(order.getTicker()).addOrder(order);
+                OrderBook book = orderBookMap.get(order.getTicker());
+                if(order.getType() == OrderType.MARKET && (!book.bidsExist() || !book.asksExist())){
+                    resp.setSuccess(false);
+                    resp.setMessage("Can't place market orders when there are no bids or no asks!");
+                }
+                else{
+                    book.addOrder(order);
+                }
             }
             return orderSerializer.writeValueAsString(resp);
         } catch (IOException e) {

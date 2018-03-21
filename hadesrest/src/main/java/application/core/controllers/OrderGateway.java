@@ -1,15 +1,21 @@
 package application.core.controllers;
 
+import application.core.repositories.TraderRepository;
 import application.core.security.TokenManager;
 import application.core.services.OrderService;
+import application.core.services.TraderDetailsService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import models.entities.Order;
+import models.entities.Trader;
 import models.messages.ApiMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
@@ -29,6 +35,9 @@ public class OrderGateway {
     @Autowired
     private TokenManager tokenManager;
 
+    @Autowired
+    private TraderRepository traderRepository;
+
     public OrderGateway(){
         this.objectWriter = new ObjectMapper().writer();
         
@@ -42,12 +51,22 @@ public class OrderGateway {
     @PostMapping(value="/order", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiMessage> createOrder(@Valid @RequestBody Order order) throws TimeoutException {
         try {
+            String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+            Trader t = traderRepository.findByUsername(userName);
+
+            Long traderId = traderRepository.findByUsername(userName).getId();
+            order.setTraderId(traderId);
+            //ToDo: This should be part of the engine.
+            if(t.getAccount().getCapital() < order.getSize() * order.getPrice()){
+                return ResponseEntity.ok(new ApiMessage(false, "Not enough capital"));
+            }
             ApiMessage res = orderService.processOrder(objectWriter.writeValueAsString(order));
+
             if(res.getSuccess()){
                 orderService.saveOrder(order);
             }
             else{
-                return ResponseEntity.badRequest().body(new ApiMessage(false, "failed to process order"));
+                return ResponseEntity.ok(new ApiMessage(false, "failed to process order"));
             }
             return ResponseEntity.ok().body(res);
 
@@ -58,11 +77,12 @@ public class OrderGateway {
 
     /**
      *
-     * @param traderId TraderId of trader to get the open orders for
      * @return A list of open orders for the trader with id traderId
      */
     @GetMapping(value="/order", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Order>> getOrdersForTrader(@Valid @RequestParam("traderId") long traderId){
+    public ResponseEntity<List<Order>> getOrdersForTrader(){
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        Long traderId = traderRepository.findByUsername(userName).getId();
         return ResponseEntity.ok().body(orderService.getOrdersForTrader(traderId));
     }
 }

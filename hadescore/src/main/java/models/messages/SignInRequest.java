@@ -11,4 +11,9 @@ public class SignInRequest {
     public String getUsername() {
         return username;
     }
+
+    public SignInRequest(String username, String password){
+        this.username = username;
+        this.password = password;
+    }
 }
