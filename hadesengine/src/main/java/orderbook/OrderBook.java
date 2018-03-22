@@ -147,8 +147,6 @@ public class OrderBook {
                         orderSize = order.getSize();
                         currOrder.setSize(0);
                         currOrder.setFilled(true);
-//                        ordersAtBestAskBid.removeIf(o -> o.getSize() == 0.0);
-//                        ordersAtBestAskBid.remove(currOrder);
                         printSnapshot();
                     }
                 }
