@@ -1,6 +1,0 @@
-orderbook/OrderBook$1.class
-orderbook/OrderBookFactory.class
-orderbook/OrderBook.class
-eventprocessing/OrderListener.class
-eventprocessing/OrderRpcServer.class
-eventprocessing/OrderValidator.class
