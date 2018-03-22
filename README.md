@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/Amogh100/hades-darkpool.svg?branch=master)](https://travis-ci.org/Amogh100/hades-darkpool)
+
 # hades-darkpool
 This is a simple dark pool for cryptocurrencies called hades. This is a project for my CSCI 3010 course. It includes a front end client in react, and a rest api implemented using Spring Boot.
 
