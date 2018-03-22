@@ -10,8 +10,8 @@ Java JDK/JRE 8+<br />
 Maven 3 <br />
 Node.js version 8.9.1 <br />
 NPM version 5.5.1 <br />
-Docker https://docs.docker.com/ for docs < br />
-rabbitmq Docker image https://hub.docker.com/_/rabbitmq/ <br/>
+Docker https://docs.docker.com/ for docs <br />
+rabbitmq Docker image https://hub.docker.com/_/rabbitmq/      
 
 Ensure PostgresSQL is downloaded on your environment, and a database with the name hadesmaster is created.
 Create a username/password in Postgres to access this database. Before you run anything, create the environment variables
