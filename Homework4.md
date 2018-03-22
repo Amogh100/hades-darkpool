@@ -8,3 +8,5 @@ I implemented the matching algorithm described above as well as user validation,
 HW5 Goal as per proposal "TradeReport, send JSON back to GUI (via REST). Display Traderport in list view". This is on track, and I have no intentions of changing this.
 
 # Section 4
+[![Screenshot_from_2018-03-21_21-26-09.png](https://s14.postimg.org/rcw4x09y9/Screenshot_from_2018-03-21_21-26-09.png)](https://postimg.org/image/6srayiu71/)
+This is the sign in/up page
