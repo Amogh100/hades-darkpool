@@ -98,6 +98,7 @@ public class OrderBookTest {
 
     @Test
     public void manyBuysOneBigSell(){
+        System.out.println("RUNNING BUYS ONE BIG SELL\n\n\n");
         OrderBook book = OrderBookFactory.createNewOrderbook("BTC", 100);
         Order o1 = new Order(1,"BTC",4000, true, OrderType.LIMIT,9900.90,1);
         Order o2 = new Order(2,"BTC",1000, true, OrderType.LIMIT,9900.90,2);

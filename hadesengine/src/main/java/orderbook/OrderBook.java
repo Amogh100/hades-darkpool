@@ -108,6 +108,7 @@ public class OrderBook {
      * @param orderSize size of the order
      */
     private void processAtPriceLevel(Order order, Double currPriceLevel, Double orderPrice, Double orderSize) {
+        ArrayList<Order> ordersToRemove = new ArrayList<>();
         if (currPriceLevel != null && validLimitCross(orderPrice, currPriceLevel, order.isBid())) {
             ArrayList < Order > ordersAtBestAskBid = priceLevels.get(currPriceLevel);
             while (ordersAtBestAskBid != null && validLimitCross(orderPrice, currPriceLevel, order.isBid())) {
@@ -147,9 +148,11 @@ public class OrderBook {
                         orderSize = order.getSize();
                         currOrder.setSize(0);
                         currOrder.setFilled(true);
+                        ordersToRemove.add(currOrder);
                         printSnapshot();
                     }
                 }
+                ordersAtBestAskBid.removeAll(ordersToRemove);
                 //Continue to next price level. Reset best ask.
                 if(ordersAtBestAskBid.isEmpty()){
                     deletePriceLevel(currPriceLevel);
