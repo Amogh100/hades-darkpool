@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * Represents an Order in the Order book.
@@ -46,6 +47,8 @@ public class Order {
 
     @JsonIgnore
     private boolean filled;
+
+    private Date date;
 
 
     /**
@@ -130,5 +133,13 @@ public class Order {
 
     public long getOrderBookId() {
         return orderBookId;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Date getDate(){
+        return date;
     }
 }
