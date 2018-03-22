@@ -18,6 +18,7 @@ This is the temporary Order Book snapshot I have for debugging the order book co
 This is the updated dashboard, although now open orders are not all open orders but open orders for the currently sign in user. There is a sign out functionality, as well as a capital display on the top (it's tiny, I have yet to major styling so the GUI is ugly.)
 
 ![jwt.png](https://s14.postimg.org/ivwmlwxht/jwt.png)
+
 User auth is done through JWT (JSON web tokens). The SPring application handles the creation/management of these tokens, but they're cached in the browser and removed upon sign out.
 
 
