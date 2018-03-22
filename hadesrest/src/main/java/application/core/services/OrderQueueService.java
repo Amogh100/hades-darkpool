@@ -8,6 +8,10 @@ import com.rabbitmq.client.RpcClient;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
+/**
+ * Singleton class that enables RPC calls to be made over
+ * RabbitMQ
+ */
 public class OrderQueueService {
     //Connection is a abstraction of a connection to rabbitmq
     private Connection connection;

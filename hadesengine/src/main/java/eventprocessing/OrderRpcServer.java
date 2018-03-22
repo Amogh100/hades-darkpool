@@ -11,6 +11,7 @@ import orderbook.OrderBookFactory;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -51,6 +52,7 @@ public class OrderRpcServer extends StringRpcServer {
         System.out.println("Got request: " + orderMessage);
         try {
             Order order = orderSerializer.readValue(orderMessage, Order.class);
+            order.setDate(new Date(System.currentTimeMillis()));
             ApiMessage resp = OrderValidator.validate(order, orderBookMap.keySet());
             if(resp.getSuccess()){
                 OrderBook book = orderBookMap.get(order.getTicker());

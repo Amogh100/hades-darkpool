@@ -5,6 +5,7 @@ import React, { Component } from "react";
 import styles from "./OrderEntry";
 import axios from "axios";
 import Order from "./Order";
+import AuthorizationService from "../services/AuthorizationService";
 
 /** 
  * Component for entering in orders.
@@ -29,6 +30,7 @@ class OrderEntry extends Component {
     this.onSideSelect = this.onSideSelect.bind(this);
     this.onAssetSelect = this.onAssetSelect.bind(this);
     this.enterOrder = this.enterOrder.bind(this);
+    this.auth = new AuthorizationService();
   }
 
   /**
@@ -195,6 +197,14 @@ class OrderEntry extends Component {
           </DropdownButton>
           <Button bsStyle="primary" bsSize="large" onClick={this.enterOrder}>
             Enter Order
+          </Button>
+
+            <Button bsStyle="primary" bsSize="large" onClick={this.enterOrder}>
+            Enter Order
+          </Button>
+
+            <Button bsStyle="primary" bsSize="large" onClick={this.auth.signOut}>
+            Sign Out
           </Button>
         </div>
         {size}

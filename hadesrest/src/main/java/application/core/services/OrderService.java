@@ -42,6 +42,13 @@ public class OrderService {
         return orders.findByTraderId(traderId);
     }
 
+    /**
+     * Sends a serialized order to the queueing service,
+     * which sends the message over RabbitMQ
+     * @param orderMessage Serialized order to process.
+     * @return
+     * @throws TimeoutException
+     */
     public ApiMessage processOrder(String orderMessage) throws TimeoutException {
         try {
             String res = orderQueueService.processOrder(orderMessage);

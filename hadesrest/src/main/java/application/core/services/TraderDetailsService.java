@@ -27,6 +27,10 @@ public class TraderDetailsService implements UserDetailsService{
         return new User(t.getUsername(), t.getPassword(), new HashSet<>());
     }
 
+    /**
+     *
+     * @param newTrader Store trader in the repository
+     */
     public void save(Trader newTrader) {
         if(traderRepository.findByUsername(newTrader.getUsername()) != null){
             throw new IllegalArgumentException("Duplicate username");

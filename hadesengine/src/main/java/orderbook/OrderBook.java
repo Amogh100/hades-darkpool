@@ -147,7 +147,8 @@ public class OrderBook {
                         orderSize = order.getSize();
                         currOrder.setSize(0);
                         currOrder.setFilled(true);
-                        ordersAtBestAskBid.remove(i);
+//                        ordersAtBestAskBid.removeIf(o -> o.getSize() == 0.0);
+//                        ordersAtBestAskBid.remove(currOrder);
                         printSnapshot();
                     }
                 }
@@ -193,12 +194,15 @@ public class OrderBook {
      * Helper to print the orderbook snapshot.
      */
     public void printSnapshot(){
+        System.out.println("------------BEGIN SNAPSHOT------");
         for(HashMap.Entry<Double, ArrayList<Order>> en: priceLevels.entrySet()){
             System.out.println("Price Level " + en.getKey());
             for(Order o: en.getValue()){
                 System.out.println("Order " + o.getOrderBookId() + " " + getBid(o) + " size: " + o.getSize());
             }
         }
+        System.out.println("------------END SNAPSHOT------");
+
     }
 
     /**
@@ -245,15 +249,26 @@ public class OrderBook {
      * @param order Order to get new price level for
      * @return updated PriceLevel
      */
-    private double getNewPriceLevel(Order order){
-        Double newPriceLevel = null;
+    private Double getNewPriceLevel(Order order){
+        Double newPriceLevel;
         if(order.isBid()){
             askPrices.poll();
-            newPriceLevel = getBestAsk();
+            if(asksExist()) {
+                newPriceLevel = getBestAsk();
+            }
+            else {
+                newPriceLevel = order.getPrice();
+            }
         }
         else{
             bidPrices.poll();
-            newPriceLevel = getBestBid();
+            if(bidsExist()){
+                newPriceLevel = getBestBid();
+            }
+            else {
+                newPriceLevel = order.getPrice();
+            }
+
         }
         return newPriceLevel;
     }

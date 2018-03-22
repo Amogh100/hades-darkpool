@@ -6,6 +6,10 @@ import orderbook.OrderBookFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class OrderBookTest {
 
 
@@ -90,6 +94,31 @@ public class OrderBookTest {
         TestCase.assertEquals(book.getBestAsk(), 9900.95);
         TestCase.assertEquals(book.getBestBid(), 9900.93);
 
+    }
+
+    @Test
+    public void manyBuysOneBigSell(){
+        OrderBook book = OrderBookFactory.createNewOrderbook("BTC", 100);
+        Order o1 = new Order(1,"BTC",4000, true, OrderType.LIMIT,9900.90,1);
+        Order o2 = new Order(2,"BTC",1000, true, OrderType.LIMIT,9900.90,2);
+        Order o3 = new Order(3,"BTC",1000, true, OrderType.LIMIT,9900.90,3);
+        Order o4 = new Order(4,"BTC",1000, true, OrderType.LIMIT,9900.90,4);
+        Order o5 = new Order(1,"BTC",1000, true, OrderType.LIMIT,9900.90,5);
+        Order o6 = new Order(2,"BTC",1000, true, OrderType.LIMIT,9900.90,6);
+        List<Order> orders = Arrays.asList(o1, o2, o3, o4, o5,o6);
+        for(Order o: orders){
+            book.addOrder(o);
+        }
+        Order o7 = new Order(2,"BTC",7500, false, OrderType.LIMIT,9900.90,7);
+        book.addOrder(o7);
+
+        TestCase.assertEquals(0.0, o7.getSize());
+        TestCase.assertEquals(0.0, o1.getSize());
+        TestCase.assertEquals(0.0, o2.getSize());
+        TestCase.assertEquals(0.0, o3.getSize());
+        TestCase.assertEquals(0.0, o4.getSize());
+        TestCase.assertEquals(500.0,o5.getSize());
+        TestCase.assertEquals(1000.0,o6.getSize());
 
 
     }

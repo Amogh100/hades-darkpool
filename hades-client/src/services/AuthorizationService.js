@@ -26,10 +26,11 @@ export default class AuthorizationService {
         axios.post("http://localhost:8080/user/signIn", {"username": username, "password": password}).then(
             response => {
                 this.updateToken(response.data.message);
+                window.location.replace("/");
+
                 Promise.resolve(response);
             }
         )
-        window.location.replace("/");
     }
     
     /**
@@ -85,6 +86,11 @@ export default class AuthorizationService {
      */
     updateToken = function(token) {
         localStorage.setItem("jwt", token);
+    }
+
+    signOut = function(token) {
+        localStorage.removeItem("jwt");
+        window.location.replace("/login");
     }
 
 }
