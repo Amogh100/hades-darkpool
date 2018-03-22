@@ -11,4 +11,6 @@ HW5 Goal as per proposal "TradeReport, send JSON back to GUI (via REST). Display
 ![Screenshot_from_2018-03-21_21-26-09.png](https://s14.postimg.org/rcw4x09y9/Screenshot_from_2018-03-21_21-26-09.png)
 This is the sign in/up page
 ![Screenshot_from_2018-03-21_21-25-14.png](https://s14.postimg.org/fb0r2xdld/Screenshot_from_2018-03-21_21-25-14.png)
-This is the temporary Order Book snapshot I have for debugging the order book code.
+This is the temporary Order Book snapshot I have for debugging the order book code. 3 buy XRP orders with a quantity of 3000 at 10.04 each are sent through the server (which then routes the orders to the engine) and then a sell 5000 XRP order at 
+10.04 is executed. This sell order crosses and then the first buy order is completely filled while the second is partially filled 2000. The third buy order still sits in the book.
+
