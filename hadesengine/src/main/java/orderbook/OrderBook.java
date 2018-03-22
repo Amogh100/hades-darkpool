@@ -116,12 +116,10 @@ public class OrderBook {
                 for (int i = 0; i < ordersAtBestAskBid.size(); i++) {
                     Order currOrder = ordersAtBestAskBid.get(i);
                     double currOrderQty = currOrder.getSize();
-                    //ToDo: refactor
-
+                    //ToDo: refactor this code is really bad
                     //Case where current order can completely fill crossing order, with some left over in
                     //the current order.
                     if (currOrderQty > orderSize) {
-                        System.out.println("case 1");
                         currOrder.setSize(currOrderQty - orderSize);
                         order.setSize(0);
                         order.setFilled(true);
@@ -131,7 +129,6 @@ public class OrderBook {
                     }
                     //Case where current order exactly fill crossing order
                     else if (currOrderQty == orderSize) {
-                        System.out.println("case 2");
                         resetOrdersAndPriceLevels(ordersAtBestAskBid, i + 1, currPriceLevel);
                         order.setSize(0);
                         currOrder.setSize(0);
@@ -143,7 +140,6 @@ public class OrderBook {
                     //Case where current order only partially fills
                     //crossing order.
                     else {
-                        System.out.println("case 3");
                         order.setSize(orderSize - currOrderQty);
                         orderSize = order.getSize();
                         currOrder.setSize(0);
