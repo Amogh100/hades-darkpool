@@ -14,6 +14,7 @@ public class TradeDatabaseUpdater implements Runnable {
         this.cache = cache;
     }
 
+    //This runnable class constantly takes the contents of the cache and updates the trade database.
     @Override
     public void run() {
         if(cache.isEmpty()){
