@@ -5,6 +5,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+  * Helper class for managing JDBC connections.
+  */
 public class DatabaseHelper{
 
     private static final String url = "jdbc:postgresql://localhost:5432/hadesmaster";
