@@ -15,7 +15,7 @@ public class TradeManager {
 
    
     public TradeManager(TradeCache cache){
-        this.cache = cache
+        this.cache = cache;
     }
     
     //manageTrades caches all the trades and updates accounts for trade.
