@@ -1,7 +1,10 @@
 package orderbook;
 
 import models.entities.Order;
+import models.entities.Trade;
+import structures.TradeManager;
 
+import java.sql.SQLException;
 import java.util.*;
 
 public class OrderBook {
@@ -18,13 +21,19 @@ public class OrderBook {
     //Min heap for asks
     private PriorityQueue < Double > askPrices;
 
+    private TradeManager manager;
 
-    public OrderBook(String ticker, long maxDepth) {
+    private HashSet<Trade> currentTrades;
+
+
+    public OrderBook(String ticker, long maxDepth, TradeManager manager) {
         this.ticker = ticker;
         this.maxDepth = maxDepth;
         this.bidPrices = new PriorityQueue < > (Collections.reverseOrder());
         this.askPrices = new PriorityQueue < > ();
         this.priceLevels = new HashMap < > ();
+        this.manager = manager;
+        this.currentTrades = new HashSet<>();
         ORDER_ID_COUNT = 0;
     }
 
@@ -78,7 +87,11 @@ public class OrderBook {
             currPriceLevel = getBestBid();
         }
         order.setOrderbookId(ORDER_ID_COUNT++);
-        processAtPriceLevel(order, currPriceLevel,orderPrice, orderSize);
+        try {
+            processAtPriceLevel(order, currPriceLevel,orderPrice, orderSize);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -107,65 +120,79 @@ public class OrderBook {
      * @param orderPrice price of the order
      * @param orderSize size of the order
      */
-    private void processAtPriceLevel(Order order, Double currPriceLevel, Double orderPrice, Double orderSize) {
-        ArrayList<Order> ordersToRemove = new ArrayList<>();
-        if (currPriceLevel != null && validLimitCross(orderPrice, currPriceLevel, order.isBid())) {
-            ArrayList < Order > ordersAtBestAskBid = priceLevels.get(currPriceLevel);
-            while (ordersAtBestAskBid != null && validLimitCross(orderPrice, currPriceLevel, order.isBid())) {
-                //ToDo: Instead of printing snapshot, generate TradeReports.
-                for (int i = 0; i < ordersAtBestAskBid.size(); i++) {
-                    Order currOrder = ordersAtBestAskBid.get(i);
-                    double currOrderQty = currOrder.getSize();
-                    //ToDo: refactor this code is really bad
-                    //Case where current order can completely fill crossing order, with some left over in
-                    //the current order.
-                    if (currOrderQty > orderSize) {
-                        currOrder.setSize(currOrderQty - orderSize);
-                        order.setSize(0);
-                        order.setFilled(true);
-                        resetOrdersAndPriceLevels(ordersAtBestAskBid, i, currPriceLevel);
-                        printSnapshot();
-                        return;
+    private void processAtPriceLevel(Order order, Double currPriceLevel, Double orderPrice, Double orderSize) throws SQLException {
+        try{
+            ArrayList<Order> ordersToRemove = new ArrayList<>();
+            if (currPriceLevel != null && validLimitCross(orderPrice, currPriceLevel, order.isBid())) {
+                ArrayList < Order > ordersAtBestAskBid = priceLevels.get(currPriceLevel);
+                while (ordersAtBestAskBid != null && validLimitCross(orderPrice, currPriceLevel, order.isBid())) {
+                    //ToDo: Instead of printing snapshot, generate TradeReports.
+                    for (int i = 0; i < ordersAtBestAskBid.size(); i++) {
+                        Order currOrder = ordersAtBestAskBid.get(i);
+                        double currOrderQty = currOrder.getSize();
+                        //ToDo: refactor this code is really bad
+                        //Case where current order can completely fill crossing order, with some left over in
+                        //the current order.
+                        if (currOrderQty > orderSize) {
+                            currOrder.setSize(currOrderQty - orderSize);
+                            order.setSize(0);
+                            order.setFilled(true);
+                            resetOrdersAndPriceLevels(ordersAtBestAskBid, i, currPriceLevel);
+                            printSnapshot();
+                            currentTrades.add(new Trade(currOrder.getTraderId(), currOrder.getGlobalOrderId(),
+                                                        order.getTraderId(), order.getGlobalOrderId(),
+                                                        orderSize, currPriceLevel));
+                            return;
+                        }
+                        //Case where current order exactly fill crossing order
+                        else if (currOrderQty == orderSize) {
+                            resetOrdersAndPriceLevels(ordersAtBestAskBid, i + 1, currPriceLevel);
+                            order.setSize(0);
+                            currOrder.setSize(0);
+                            order.setFilled(true);
+                            currOrder.setFilled(true);
+                            printSnapshot();
+                            currentTrades.add(new Trade(currOrder.getTraderId(), currOrder.getGlobalOrderId(),
+                                    order.getTraderId(), order.getGlobalOrderId(),
+                                    orderSize, currPriceLevel));
+                            return;
+                        }
+                        //Case where current order only partially fills
+                        //crossing order.
+                        else {
+                            order.setSize(orderSize - currOrderQty);
+                            orderSize = order.getSize();
+                            currOrder.setSize(0);
+                            currOrder.setFilled(true);
+                            ordersToRemove.add(currOrder);
+                            printSnapshot();
+                            currentTrades.add(new Trade(currOrder.getTraderId(), currOrder.getGlobalOrderId(),
+                                    order.getTraderId(), order.getGlobalOrderId(),
+                                    currOrderQty, currPriceLevel));
+                        }
                     }
-                    //Case where current order exactly fill crossing order
-                    else if (currOrderQty == orderSize) {
-                        resetOrdersAndPriceLevels(ordersAtBestAskBid, i + 1, currPriceLevel);
-                        order.setSize(0);
-                        currOrder.setSize(0);
-                        order.setFilled(true);
-                        currOrder.setFilled(true);
-                        printSnapshot();
-                        return;
+                    ordersAtBestAskBid.removeAll(ordersToRemove);
+                    //Continue to next price level. Reset best ask.
+                    if(ordersAtBestAskBid.isEmpty()){
+                        deletePriceLevel(currPriceLevel);
                     }
-                    //Case where current order only partially fills
-                    //crossing order.
-                    else {
-                        order.setSize(orderSize - currOrderQty);
-                        orderSize = order.getSize();
-                        currOrder.setSize(0);
-                        currOrder.setFilled(true);
-                        ordersToRemove.add(currOrder);
-                        printSnapshot();
-                    }
+                    currPriceLevel = getNewPriceLevel(order);
+                    ordersAtBestAskBid = priceLevels.get(currPriceLevel);
                 }
-                ordersAtBestAskBid.removeAll(ordersToRemove);
-                //Continue to next price level. Reset best ask.
-                if(ordersAtBestAskBid.isEmpty()){
-                    deletePriceLevel(currPriceLevel);
+                if (!order.isFilled()) {
+                    //If there's still volume remaining add the order to the price level
+                    addOrderAtPriceLevel(order, orderPrice);
+                    printSnapshot();
                 }
-                currPriceLevel = getNewPriceLevel(order);
-                ordersAtBestAskBid = priceLevels.get(currPriceLevel);
             }
-            if (order.getSize() > 0) {
-                //If there's still volume remaining add the order to the price level
+            else {
                 addOrderAtPriceLevel(order, orderPrice);
                 printSnapshot();
             }
+        } finally {
+            this.manager.manageTrades(currentTrades);
         }
-        else {
-            addOrderAtPriceLevel(order, orderPrice);
-            printSnapshot();
-        }
+
     }
 
     /**

@@ -4,17 +4,20 @@ import models.Position;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Trader {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "serial")
     private long id;
 
 
     private String username;
     private String password;
+
     private HashSet<Position> positions;
 
     @OneToOne(cascade = {CascadeType.ALL})
@@ -42,7 +45,7 @@ public class Trader {
         return password;
     }
 
-    public HashSet<Position> getPositions(){
+    public Set<Position> getPositions(){
         return positions;
     }
 

@@ -1,5 +1,8 @@
 package orderbook;
 
+import structures.TradeCache;
+import structures.TradeManager;
+
 public class OrderBookFactory {
 
     /**
@@ -9,7 +12,7 @@ public class OrderBookFactory {
      * @return
      */
     public static OrderBook createNewOrderbook(String ticker, long maxDepth){
-        return new OrderBook(ticker, maxDepth);
+        return new OrderBook(ticker, maxDepth, new TradeManager(new TradeCache()));
     }
 
 }

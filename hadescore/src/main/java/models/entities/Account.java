@@ -1,9 +1,6 @@
 package models.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Account that stores capital information
@@ -12,8 +9,14 @@ import javax.persistence.Id;
 public class Account {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private long id;
+
+    @OneToOne
+    @PrimaryKeyJoinColumn
+    private Trader trader;
+
+
 
     private double capital;
 
@@ -34,7 +37,7 @@ public class Account {
         this(100000);
     }
 
-    public Account(long capital){
+    public Account(double capital){
         this.capital = capital;
     }
 }
