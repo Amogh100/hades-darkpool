@@ -84,6 +84,7 @@ public class TradeManager {
         }
     }
 
+    //ToDo: failed to properly implement this for checkpoint
 //    private void updatePositionsForTrader(Trader t, Order o) {
 //        Set<Position> positions = t.getPositions();
 //        double positionChange = o.getSize();
