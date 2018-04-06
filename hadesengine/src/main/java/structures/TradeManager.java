@@ -13,9 +13,13 @@ public class TradeManager {
 
     private TradeCache cache;
 
+   
     public TradeManager(TradeCache cache){
-        this.cache = cache;
+        this.cache = cache
     }
+    
+    //manageTrades caches all the trades and updates accounts for trade.
+    //@param trades Trades to manage.
     public void manageTrades(Set<Trade> trades) throws SQLException {
         for(Trade t: trades){
             cache.addTrade(t);
@@ -24,6 +28,13 @@ public class TradeManager {
         }
     }
 
+    /**
+      * updateAccountsForTrader updates the account status after a given trade.
+      * @param traderId trader to update account status for
+      * @param orderId trader's order
+      * @param price price of trade
+      * @param size size of trade
+      */
     private void updateAccountsForTrader(long traderId, long orderId, double price, double size){
         String existingCapitalQuery = "SELECT capital FROM account WHERE id = ?";
         double existingCapital = 0;
