@@ -10,7 +10,7 @@ The goal for final checkpoint 2 that I had was to implement the "Remaining REST
 Endpoints for GUI". There are several noteworthy modifications to this checkpoint that I plan on making. First, I believe there are not any more significant endpoints that I actually have to implement for a user. I plan on shifting my focus towards robustly testing my Trade Managing engine. I also plan on refactoring a lot of the Trade management code. In particular, I will have to implement some in-memory data structures that are constantly listening for events and updating the database. I will implement a PositionMonitor class, which contains the positions for all the traders. This will be an easier abstraction for me to work with in order to create, update, or remove posiitions for any trader in the system. In a nutshell, I plan on cleaning up the implementation for this checkpoint as I believe the current implementation is not satisfactory.
 
 # Screenshots  
-[![database.png](https://s17.postimg.org/wvjizfhhb/database.png)](https://postimg.org/image/6n8ea1xdn/)
+[![database.png](https://s17.postimg.org/h3t3ppdxr/database.png)](https://postimg.org/image/a0l8a38i3/)
 This is a snapshot of the Trade database (effectively, the trade reports)
 
 [![trade_report_json.png](https://s17.postimg.org/4nwdw9pu7/trade_report_json.png)](https://postimg.org/image/4nwdw9pu3/)
