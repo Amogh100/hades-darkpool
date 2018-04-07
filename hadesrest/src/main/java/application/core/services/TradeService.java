@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+//Rest Service for obtaining trade information
+//Meant for use in Controllers, so that controllers don't directly speak to the database layer.
 @Service
 public class TradeService {
 
