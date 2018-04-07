@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+
 @RestController
 public class TradeController {
 
@@ -21,6 +22,7 @@ public class TradeController {
     @Autowired
     private TraderRepository traderRepository;
 
+    //Endpoint for getting all trades for a given user.
     @GetMapping(value="/trades", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Trade>> getOrdersForTrader(){
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
