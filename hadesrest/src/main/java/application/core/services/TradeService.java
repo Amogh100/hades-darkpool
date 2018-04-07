@@ -15,6 +15,10 @@ public class TradeService {
     @Autowired
     private TradeRepository tradeRepository;
 
+    /**
+     * getTradesForTrader returns a list of trades for a given trader
+     * @param traderId trader id of the trader we want to obtain the trades of.
+     */
     public List<Trade> getTradesForTrader(long traderId){
         return tradeRepository.findByTraderId(traderId);
     }
