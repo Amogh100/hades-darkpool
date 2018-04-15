@@ -5,6 +5,7 @@ import structures.TradeCache;
 
 import java.sql.*;
 
+//This runnable class constantly takes the contents of the cache and updates the trade database.
 public class TradeDatabaseUpdater implements Runnable {
 
     private TradeCache cache;

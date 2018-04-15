@@ -2,6 +2,7 @@ package models.entities;
 
 import javax.persistence.*;
 
+//Trade entity manages a trade in the system.
 @Entity
 public class Trade {
 
