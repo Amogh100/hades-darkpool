@@ -1,8 +1,0 @@
-models/Position.class
-models/entities/Trader.class
-models/entities/Account.class
-models/entities/Order.class
-models/messages/SignInRequest.class
-models/OrderType.class
-models/messages/TraderInfoMessage.class
-models/messages/ApiMessage.class

@@ -22,11 +22,9 @@ public class TradeCache {
     }
 
     public synchronized void clearCache(){
-        System.out.println("Clearing cache");
         this.tradeSet.clear();
     }
     public synchronized void addTrade(Trade t){
-        System.out.println("Added trade to cache!");
         tradeSet.add(t);
     }
     public synchronized boolean isEmpty(){
