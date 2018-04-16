@@ -4,6 +4,7 @@ import models.entities.Order;
 import models.OrderType;
 import models.messages.ApiMessage;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 public class OrderValidator {
@@ -14,7 +15,7 @@ public class OrderValidator {
      * @return true if the order has a valid size, false otherwise
      */
     private static boolean validSize(Order order){
-        return order.getSize() > 0;
+        return order.getSize().compareTo(BigDecimal.ZERO) > 0;
     }
 
     /**
@@ -24,7 +25,7 @@ public class OrderValidator {
      */
     private static boolean validPrice(Order order){
         if(order.getType() == OrderType.LIMIT){
-            return order.getPrice() > 0;
+            return order.getPrice().compareTo(BigDecimal.ZERO) > 0;
         }
         return true;
     }

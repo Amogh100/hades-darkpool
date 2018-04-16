@@ -18,7 +18,6 @@ public class OrderListener {
             Connection conn = connFactory.newConnection();
             final Channel ch = conn.createChannel();
             final ObjectMapper serializer=  new ObjectMapper();
-
             ch.queueDeclare("order", false, false, false, null);
             OrderRpcServer server = new OrderRpcServer(ch, "order");
             server.mainloop();

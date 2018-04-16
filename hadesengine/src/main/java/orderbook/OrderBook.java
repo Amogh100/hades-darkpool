@@ -4,6 +4,7 @@ import models.entities.Order;
 import models.entities.Trade;
 import structures.TradeManager;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -13,25 +14,26 @@ public class OrderBook {
     private final long maxDepth;
     private static long ORDER_ID_COUNT;
 
-    HashMap < Double, ArrayList < Order >> priceLevels;
+    HashMap < BigDecimal, ArrayList<Order>> priceLevels;
 
     //Want max heap for bids
-    private PriorityQueue < Double > bidPrices;
+    private PriorityQueue < BigDecimal > bidPrices;
 
     //Min heap for asks
-    private PriorityQueue < Double > askPrices;
+    private PriorityQueue < BigDecimal > askPrices;
 
     private TradeManager manager;
 
     private HashSet<Trade> currentTrades;
+    
 
 
     public OrderBook(String ticker, long maxDepth, TradeManager manager) {
         this.ticker = ticker;
         this.maxDepth = maxDepth;
-        this.bidPrices = new PriorityQueue < > (Collections.reverseOrder());
-        this.askPrices = new PriorityQueue < > ();
-        this.priceLevels = new HashMap < > ();
+        this.bidPrices = new PriorityQueue<>(Collections.reverseOrder());
+        this.askPrices = new PriorityQueue<>();
+        this.priceLevels = new HashMap<>();
         this.manager = manager;
         this.currentTrades = new HashSet<>();
         ORDER_ID_COUNT = 0;
@@ -77,10 +79,10 @@ public class OrderBook {
      * @param order Limit Order
      */
     private void handleLimitOrder(Order order) {
-        double orderPrice = order.getPrice();
-        double orderSize = order.getSize();
+        BigDecimal orderPrice = order.getPrice();
+        BigDecimal orderSize = order.getSize();
         boolean isBid = order.isBid();
-        Double currPriceLevel;
+        BigDecimal currPriceLevel;
         if (isBid) {
             currPriceLevel = getBestAsk();
         } else {
@@ -99,7 +101,7 @@ public class OrderBook {
      * @param order Adds order to a price level.
      * @param price Price level to add order.
      */
-    private void addOrderAtPriceLevel(Order order, Double price) {
+    private void addOrderAtPriceLevel(Order order, BigDecimal price) {
         ArrayList < Order > newOrders = priceLevels.get(price);
         if(newOrders == null){
             newOrders = new ArrayList<>();
@@ -120,7 +122,7 @@ public class OrderBook {
      * @param orderPrice price of the order
      * @param orderSize size of the order
      */
-    private void processAtPriceLevel(Order order, Double currPriceLevel, Double orderPrice, Double orderSize) throws SQLException {
+    private void processAtPriceLevel(Order order, BigDecimal currPriceLevel, BigDecimal orderPrice, BigDecimal orderSize) throws SQLException {
         try{
             ArrayList<Order> ordersToRemove = new ArrayList<>();
             if (currPriceLevel != null && validLimitCross(orderPrice, currPriceLevel, order.isBid())) {
@@ -129,46 +131,46 @@ public class OrderBook {
                     //ToDo: Instead of printing snapshot, generate TradeReports.
                     for (int i = 0; i < ordersAtBestAskBid.size(); i++) {
                         Order currOrder = ordersAtBestAskBid.get(i);
-                        double currOrderQty = currOrder.getSize();
+                        BigDecimal currOrderQty = currOrder.getSize();
                         //ToDo: refactor this code is really bad
                         //Case where current order can completely fill crossing order, with some left over in
                         //the current order.
-                        if (currOrderQty > orderSize) {
-                            currOrder.setSize(currOrderQty - orderSize);
-                            order.setSize(0);
+                        if (currOrderQty.compareTo(orderSize) > 0) {
+                            currOrder.setSize(currOrderQty.subtract(orderSize));
+                            order.setSize(BigDecimal.ZERO);
                             order.setFilled(true);
                             resetOrdersAndPriceLevels(ordersAtBestAskBid, i, currPriceLevel);
                             printSnapshot();
-                            currentTrades.add(new Trade(currOrder.getTraderId(), currOrder.getGlobalOrderId(),
-                                                        order.getTraderId(), order.getGlobalOrderId(),
-                                                        orderSize, currPriceLevel));
+                            currentTrades.add(new Trade(currOrder.getTraderId(), order.getTraderId(),
+                                                        currOrder.getGlobalOrderId(), order.getGlobalOrderId(),
+                                                        currPriceLevel, orderSize));
                             return;
                         }
                         //Case where current order exactly fill crossing order
                         else if (currOrderQty == orderSize) {
                             resetOrdersAndPriceLevels(ordersAtBestAskBid, i + 1, currPriceLevel);
-                            order.setSize(0);
-                            currOrder.setSize(0);
+                            order.setSize(BigDecimal.ZERO);
+                            currOrder.setSize(BigDecimal.ZERO);
                             order.setFilled(true);
                             currOrder.setFilled(true);
                             printSnapshot();
-                            currentTrades.add(new Trade(currOrder.getTraderId(), currOrder.getGlobalOrderId(),
-                                    order.getTraderId(), order.getGlobalOrderId(),
-                                    orderSize, currPriceLevel));
+                            currentTrades.add(new Trade(currOrder.getTraderId(), order.getTraderId(),
+                                                        currOrder.getGlobalOrderId(), order.getGlobalOrderId(),
+                                                        currPriceLevel, orderSize));
                             return;
                         }
                         //Case where current order only partially fills
                         //crossing order.
                         else {
-                            order.setSize(orderSize - currOrderQty);
+                            order.setSize(orderSize.subtract(currOrderQty));
                             orderSize = order.getSize();
-                            currOrder.setSize(0);
+                            currOrder.setSize(BigDecimal.ZERO);
                             currOrder.setFilled(true);
                             ordersToRemove.add(currOrder);
                             printSnapshot();
-                            currentTrades.add(new Trade(currOrder.getTraderId(), currOrder.getGlobalOrderId(),
-                                    order.getTraderId(), order.getGlobalOrderId(),
-                                    currOrderQty, currPriceLevel));
+                            currentTrades.add(new Trade(currOrder.getTraderId(), order.getTraderId(),
+                                                        currOrder.getGlobalOrderId(), order.getGlobalOrderId(),
+                                                        currPriceLevel, orderSize));
                         }
                     }
                     ordersAtBestAskBid.removeAll(ordersToRemove);
@@ -201,7 +203,7 @@ public class OrderBook {
      * @param i index in ordersAtBestAskBid to potentially sublist and clear
      * @param currPriceLevel current priceLevel
      */
-    private void resetOrdersAndPriceLevels(ArrayList<Order> ordersAtBestAskBid, int i, double currPriceLevel) {
+    private void resetOrdersAndPriceLevels(ArrayList<Order> ordersAtBestAskBid, int i, BigDecimal currPriceLevel) {
         if(i == ordersAtBestAskBid.size()){
             deletePriceLevel(currPriceLevel);
         }
@@ -210,7 +212,7 @@ public class OrderBook {
         }
     }
 
-    private void deletePriceLevel(Double currPriceLevel) {
+    private void deletePriceLevel(BigDecimal currPriceLevel) {
         priceLevels.remove(currPriceLevel);
     }
 
@@ -219,7 +221,7 @@ public class OrderBook {
      */
     public void printSnapshot(){
         System.out.println("------------BEGIN SNAPSHOT------");
-        for(HashMap.Entry<Double, ArrayList<Order>> en: priceLevels.entrySet()){
+        for(HashMap.Entry<BigDecimal, ArrayList<Order>> en: priceLevels.entrySet()){
             System.out.println("Price Level " + en.getKey());
             for(Order o: en.getValue()){
                 System.out.println("Order " + o.getOrderBookId() + " " + getBid(o) + " size: " + o.getSize());
@@ -236,8 +238,9 @@ public class OrderBook {
      * @param bid if order type is bid or ask.
      * @return
      */
-    private boolean validLimitCross(Double orderPrice, Double crossedPrice, boolean bid){
-        return (crossedPrice <= orderPrice && bid) || (crossedPrice >= orderPrice && !bid);
+    private boolean validLimitCross(BigDecimal orderPrice, BigDecimal crossedPrice, boolean bid){
+        return (crossedPrice.compareTo(orderPrice) <= 0 && bid)
+                || (crossedPrice.compareTo(orderPrice) >= 0 && !bid);
     }
 
 
@@ -245,14 +248,14 @@ public class OrderBook {
     /**
      * Returns the best bid in the order book.
      */
-    public Double getBestBid() {
+    public BigDecimal getBestBid() {
         return bidPrices.peek();
     }
 
     /**
      * Returns the best ask in the order book
      */
-    public Double getBestAsk() {
+    public BigDecimal getBestAsk() {
         return askPrices.peek();
     }
 
@@ -263,7 +266,7 @@ public class OrderBook {
         return "SELL";
     }
 
-    public boolean priceLevelExists(Double priceLevel){
+    public boolean priceLevelExists(BigDecimal priceLevel){
         return priceLevels.containsKey(priceLevel);
     }
 
@@ -273,8 +276,8 @@ public class OrderBook {
      * @param order Order to get new price level for
      * @return updated PriceLevel
      */
-    private Double getNewPriceLevel(Order order){
-        Double newPriceLevel;
+    private BigDecimal getNewPriceLevel(Order order){
+        BigDecimal newPriceLevel;
         if(order.isBid()){
             askPrices.poll();
             if(asksExist()) {
@@ -313,6 +316,10 @@ public class OrderBook {
     public boolean asksExist(){
         System.out.println("There are " + askPrices.size() + " asks");
         return askPrices.size() > 0;
+    }
+
+    public synchronized HashSet<Trade> getCurrentTrades(){
+        return currentTrades;
     }
 
 }

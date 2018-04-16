@@ -11,8 +11,8 @@ public class OrderBookFactory {
      * @param maxDepth The max depth for the given order book
      * @return
      */
-    public static OrderBook createNewOrderbook(String ticker, long maxDepth){
-        return new OrderBook(ticker, maxDepth, new TradeManager(new TradeCache()));
+    public static OrderBook createNewOrderbook(String ticker, long maxDepth, boolean flush){
+        return new OrderBook(ticker, maxDepth, new TradeManager(new TradeCache(flush)));
     }
 
 }

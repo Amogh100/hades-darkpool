@@ -1,5 +1,6 @@
 package structures;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -31,7 +32,7 @@ public class PositionCache {
                     traderPositions.put(traderId, positions);
                 }
                 String asset = results.getString("asset_id");
-                double position = results.getDouble("position_size");
+                BigDecimal position = results.getBigDecimal("position_size");
                 positions.add(new Position(asset, position, traderId));
             }
             
@@ -43,5 +44,21 @@ public class PositionCache {
 
     public static HashMap<Long, ArrayList<Position>> getTraderPositions(){
         return traderPositions;
+    }
+
+    public static void updatePosition(long traderId, String assetId,BigDecimal change){
+        ArrayList<Position> positionsForTrader = traderPositions.get(traderId);
+        if(positionsForTrader == null){
+            throw new NullPointerException("Failed to find positions for trader " + traderId);
+        }
+        for(Position pos: positionsForTrader){
+            if(pos.getAssetId().equals(assetId)){
+                pos.updatePositionSize(change);
+                return;
+            }
+        }
+        //Add a new position
+        positionsForTrader.add(new Position(assetId, change, traderId));
+
     }
 }

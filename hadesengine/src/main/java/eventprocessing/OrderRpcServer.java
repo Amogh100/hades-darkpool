@@ -38,7 +38,7 @@ public class OrderRpcServer extends StringRpcServer {
         HashSet<String> tickers = new HashSet<>(Arrays.asList("BTC", "ETH", "LTC", "XRP"));
         orderBookMap = new HashMap();
         for(String ticker: tickers){
-            orderBookMap.put(ticker, OrderBookFactory.createNewOrderbook(ticker, 100));
+            orderBookMap.put(ticker, OrderBookFactory.createNewOrderbook(ticker, 100, true));
         }
     }
 

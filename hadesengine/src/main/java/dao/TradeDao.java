@@ -20,8 +20,8 @@ public class TradeDao {
             insertStatement.setLong(2, t.getTrader2Id());
             insertStatement.setLong(3, t.getOrder1Id());
             insertStatement.setLong(4, t.getOrder2Id());
-            insertStatement.setDouble(5, t.getPrice());
-            insertStatement.setDouble(6, t.getSize());
+            insertStatement.setBigDecimal(5, t.getPrice());
+            insertStatement.setBigDecimal(6, t.getSize());
 
         } catch (SQLException e) {
             e.printStackTrace();

@@ -2,14 +2,12 @@ package eventprocessing;
 
 import models.entities.Trade;
 import structures.TradeCache;
-
 import java.sql.*;
 
 //This runnable class constantly takes the contents of the cache and updates the trade database.
 public class TradeDatabaseUpdater implements Runnable {
 
     private TradeCache cache;
-
 
     public TradeDatabaseUpdater(TradeCache cache){
         this.cache = cache;
@@ -20,7 +18,6 @@ public class TradeDatabaseUpdater implements Runnable {
         if(cache.isEmpty()){
             return;
         }
-        System.out.println("In Runnable!");
 
         String insertion = "INSERT INTO trade(trader1Id, trader2Id, order1Id, order2Id, price, fill_size) "
                             + "VALUES(?,?,?,?,?,?)";
@@ -33,8 +30,8 @@ public class TradeDatabaseUpdater implements Runnable {
                 pstmt.setLong(2, t.getTrader2Id());
                 pstmt.setLong(3, t.getOrder1Id());
                 pstmt.setLong(4, t.getOrder2Id());
-                pstmt.setDouble(5, t.getPrice());
-                pstmt.setDouble(6, t.getSize());
+                pstmt.setBigDecimal(5, t.getPrice());
+                pstmt.setBigDecimal(6, t.getSize());
                 int affectedRows = pstmt.executeUpdate();
                 if(affectedRows > 0){
                     try (ResultSet rs = pstmt.getGeneratedKeys()) {
@@ -47,8 +44,9 @@ public class TradeDatabaseUpdater implements Runnable {
                 }
 
             }
-
-            this.cache.clearCache();
+            if(cache.isFlush()){
+                this.cache.clearCache();
+            }
 
         } catch (SQLException ex){
             System.out.println(ex.getMessage());

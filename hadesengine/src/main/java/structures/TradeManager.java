@@ -3,6 +3,7 @@ package structures;
 import eventprocessing.DatabaseHelper;
 import models.entities.Trade;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -35,15 +36,15 @@ public class TradeManager {
       * @param price price of trade
       * @param size size of trade
       */
-    private void updateAccountsForTrader(long traderId, long orderId, double price, double size){
+    private void updateAccountsForTrader(long traderId, long orderId, BigDecimal price, BigDecimal size){
         String existingCapitalQuery = "SELECT capital FROM account WHERE id = ?";
-        double existingCapital = 0;
+        BigDecimal existingCapital = BigDecimal.ZERO;
         try (Connection conn = DatabaseHelper.connect();
              PreparedStatement statement = conn.prepareStatement(existingCapitalQuery)) {
             statement.setLong(1, traderId);
             ResultSet rs = statement.executeQuery();
             if(rs.next()){
-                existingCapital = rs.getDouble("capital");
+                existingCapital = rs.getBigDecimal("capital");
             }
 
         } catch (SQLException ex) {
@@ -64,18 +65,19 @@ public class TradeManager {
             System.out.println(ex.getMessage());
         }
 
-        double change = -size * price;
+        BigDecimal change = BigDecimal.valueOf(-1).multiply(size).multiply(price);
+
         if(!isBid){
-            change *= -1;
+            change = change.multiply(BigDecimal.valueOf(-1));
         }
-        double newCapital = existingCapital + change;
+        BigDecimal newCapital = existingCapital.add(change);
 
         String dbUpdate = "UPDATE account " + "SET capital = ? "
                           + "WHERE id = ?";
         try (Connection conn = DatabaseHelper.connect();
              PreparedStatement pstmt = conn.prepareStatement(dbUpdate)) {
 
-            pstmt.setDouble(1, newCapital);
+            pstmt.setBigDecimal(1, newCapital);
             pstmt.setDouble(2, traderId);
             pstmt.execute();
 
@@ -83,33 +85,5 @@ public class TradeManager {
             System.out.println(ex.getMessage());
         }
     }
-
-    //ToDo: failed to properly implement this for checkpoint
-//    private void updatePositionsForTrader(Trader t, Order o) {
-//        Set<Position> positions = t.getPositions();
-//        double positionChange = o.getSize();
-//        if(!o.isBid()){
-//            positionChange *= -1;
-//        }
-//        for(Position p: positions){
-//            if(p.getAssetId().equals(o.getTicker())){
-//                p.updatePositionSize(positionChange);
-//                String dbUpdate = "UPDATE position  " + "SET position_size = ? "
-//                                  +"FROM trader " + "WHERE ? = ?";
-//                try (Connection conn = DatabaseHelper.connect();
-//                     PreparedStatement pstmt = conn.prepareStatement(dbUpdate)) {
-//
-//                    pstmt.setDouble(1, p.getPositionSize());
-//                    pstmt.setLong(2, p.getTraderId());
-//                    pstmt.setLong(3, t.getId());
-//
-//                } catch (SQLException ex) {
-//                    System.out.println(ex.getMessage());
-//                }
-//                return;
-//            }
-//        }
-//        positions.add(new Position(o.getTicker(), o.getSize()));
-//    }
 
 }

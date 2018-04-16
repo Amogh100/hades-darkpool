@@ -9,11 +9,11 @@ import java.util.concurrent.*;
 public class TradeCache {
 
     private Set<Trade> tradeSet;
-        private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private boolean flush;
 
     //Constructs a TradeCache
-    public TradeCache(){
+    public TradeCache(boolean flushPeriodically){
         this.tradeSet = ConcurrentHashMap.newKeySet();
         //Schedule a DB update every 100 milliseconds.
         scheduler.scheduleAtFixedRate(new TradeDatabaseUpdater(this), 100, 100, TimeUnit.MILLISECONDS);
@@ -45,4 +45,7 @@ public class TradeCache {
         return tradeSet.isEmpty();
     }
 
+    public synchronized boolean isFlush(){
+        return flush;
+    }
 }
