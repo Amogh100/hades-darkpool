@@ -56,4 +56,22 @@ public class Trade {
     public BigDecimal getSize() {
         return fillSize;
     }
+
+    @Override
+    public boolean equals(Object other){
+        if(other == this){
+            return true;
+        }
+        if(!(other instanceof Trade)){
+            return false;
+        }
+        Trade t = (Trade) other;
+        boolean order1equal = t.getOrder1Id() == order1Id;
+        boolean order2Equal = t.getOrder2Id() == order2Id;
+        boolean trader1Equal = t.getTrader1Id() == trader1Id;
+        boolean trader2Equal = t.getTrader2Id() == trader2Id;
+        boolean sizeEqual = t.getSize().equals(fillSize);
+        boolean priceEqual = t.getPrice().equals(price);
+        return order1equal && order2Equal && trader1Equal && trader2Equal && sizeEqual && priceEqual;
+    }
 }
