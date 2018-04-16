@@ -57,7 +57,7 @@ public class OrderGateway {
             Long traderId = traderRepository.findByUsername(userName).getId();
             order.setTraderId(traderId);
             //ToDo: This should be part of the engine.
-            if(t.getAccount().getCapital() < order.getSize() * order.getPrice()){
+            if(t.getAccount().getCapital().compareTo(order.getSize().multiply(order.getPrice())) < 0){
                 return ResponseEntity.ok(new ApiMessage(false, "Not enough capital"));
             }
             ApiMessage res = orderService.processOrder(objectWriter.writeValueAsString(order));
