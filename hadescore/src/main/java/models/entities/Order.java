@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -33,7 +34,7 @@ public class Order {
     private String ticker;
 
     @JsonProperty(required = true)
-    private double size;
+    private BigDecimal size;
 
     @JsonProperty(required = true)
     private boolean bid;
@@ -43,7 +44,7 @@ public class Order {
 
 
     @JsonProperty(required = true)
-    private double price;
+    private BigDecimal price;
 
     @JsonIgnore
     private boolean filled;
@@ -58,7 +59,7 @@ public class Order {
      * @param bid Boolean representing if the order is a bid or ask. True if bid.
      */
 
-    public Order(long traderId, String ticker, double size, boolean bid, OrderType type, double price, long orderId){
+    public Order(long traderId, String ticker, BigDecimal size, boolean bid, OrderType type, BigDecimal price, long orderId){
         this.traderId = traderId;
         this.ticker = ticker;
         this.size = size;
@@ -79,7 +80,7 @@ public class Order {
         return ticker;
     }
 
-    public double getSize(){
+    public BigDecimal getSize(){
         return size;
     }
 
@@ -89,7 +90,7 @@ public class Order {
 
     public OrderType getType(){return type;}
 
-    public double getPrice(){return price;}
+    public BigDecimal getPrice(){return price;}
 
     public long getGlobalOrderId(){return globalOrderId;}
 
@@ -105,7 +106,7 @@ public class Order {
         this.ticker = ticker;
     }
 
-    public void setSize(double size) {
+    public void setSize(BigDecimal size) {
         this.size = size;
     }
 
@@ -117,7 +118,7 @@ public class Order {
         this.type = type;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

@@ -1,6 +1,7 @@
 package models;
 
 import javax.persistence.Entity;
+import java.math.BigDecimal;
 
 /**
  * Class for representing a position in a given asset
@@ -11,22 +12,22 @@ public class Position {
 
 
     private String assetId;
-    private double positionSize;
+    private BigDecimal positionSize;
     private long traderId;
     
     public String getAssetId(){
         return assetId;
     }
 
-    public void updatePositionSize(double change){positionSize += change;}
+    public void updatePositionSize(BigDecimal change){positionSize.add(change);}
 
-    public Position(String assetId, double positionSize, long traderId){
+    public Position(String assetId, BigDecimal positionSize, long traderId){
         this.assetId = assetId;
         this.positionSize = positionSize;
         this.traderId = traderId;
     }
 
-    public double getPositionSize() {
+    public BigDecimal getPositionSize() {
         return positionSize;
     }
 

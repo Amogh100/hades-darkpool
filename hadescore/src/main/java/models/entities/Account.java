@@ -1,6 +1,7 @@
 package models.entities;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 /**
  * Account that stores capital information
@@ -16,11 +17,9 @@ public class Account {
     @PrimaryKeyJoinColumn
     private Trader trader;
 
+    private BigDecimal capital;
 
-
-    private double capital;
-
-    public double getCapital() {
+    public BigDecimal getCapital() {
         return capital;
     }
 
@@ -28,16 +27,16 @@ public class Account {
         return id;
     }
 
-    public void addCapital(double newCapital) {
-        capital += newCapital;
+    public void addCapital(BigDecimal newCapital) {
+        capital.add(newCapital);
     }
 
 
     public Account(){
-        this(100000);
+        this(BigDecimal.valueOf(100000));
     }
 
-    public Account(double capital){
+    public Account(BigDecimal capital){
         this.capital = capital;
     }
 }

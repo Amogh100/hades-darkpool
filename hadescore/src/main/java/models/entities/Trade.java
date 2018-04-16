@@ -1,6 +1,7 @@
 package models.entities;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 //Trade entity manages a trade in the system.
 @Entity
@@ -15,14 +16,14 @@ public class Trade {
     private final long trader2Id;
     private final long order1Id;
     private final long order2Id;
-    private final double fillSize;
-    private final double price;
+    private final BigDecimal fillSize;
+    private final BigDecimal price;
 
 
-    public Trade(){this(0, 0, 0, 0,0,0);}
+    public Trade(){this(0, 0, 0, 0,BigDecimal.ZERO,BigDecimal.ZERO);}
 
 
-    public Trade(long trader1Id, long trader2Id, long order1Id, long order2Id, double price, double fillSize){
+    public Trade(long trader1Id, long trader2Id, long order1Id, long order2Id, BigDecimal price, BigDecimal fillSize){
         this.trader1Id = trader1Id;
         this.trader2Id = trader2Id;
         this.order1Id = order1Id;
@@ -48,11 +49,11 @@ public class Trade {
         return order2Id;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public double getSize() {
+    public BigDecimal getSize() {
         return fillSize;
     }
 }

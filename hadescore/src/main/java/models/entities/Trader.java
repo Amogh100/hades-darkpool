@@ -3,6 +3,7 @@ package models.entities;
 import models.Position;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -61,11 +62,11 @@ public class Trader {
         positions.add(pos);
     }
 
-    public double getCapital(){
+    public BigDecimal getCapital(){
         return account.getCapital();
     }
 
-    public void addCapital(double capital){
+    public void addCapital(BigDecimal capital){
         account.addCapital(capital);
     }
 
