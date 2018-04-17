@@ -1,5 +1,8 @@
 package structures;
 
+import dao.OrderDao;
+import dao.TradeDao;
+import dao.TraderDao;
 import eventprocessing.DatabaseHelper;
 import models.entities.Trade;
 
@@ -12,11 +15,17 @@ import java.util.Set;
 
 public class TradeManager {
 
+    private final TradeDao tradeDao;
+    private final OrderDao orderDao;
+    private final TraderDao traderDao;
     private TradeCache cache;
 
    
     public TradeManager(TradeCache cache){
         this.cache = cache;
+        this.tradeDao = new TradeDao();
+        this.orderDao = new OrderDao();
+        this.traderDao = new TraderDao();
     }
     
     //manageTrades caches all the trades and updates accounts for trade.
@@ -37,53 +46,15 @@ public class TradeManager {
       * @param size size of trade
       */
     private void updateAccountsForTrader(long traderId, long orderId, BigDecimal price, BigDecimal size){
-        String existingCapitalQuery = "SELECT capital FROM account WHERE id = ?";
-        BigDecimal existingCapital = BigDecimal.ZERO;
-        try (Connection conn = DatabaseHelper.connect();
-             PreparedStatement statement = conn.prepareStatement(existingCapitalQuery)) {
-            statement.setLong(1, traderId);
-            ResultSet rs = statement.executeQuery();
-            if(rs.next()){
-                existingCapital = rs.getBigDecimal("capital");
-            }
 
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
-
-        String isBidQuery = "SELECT bid FROM orders WHERE global_order_id = ?";
-        boolean isBid = true;
-        try (Connection conn = DatabaseHelper.connect();
-             PreparedStatement statement = conn.prepareStatement(isBidQuery)) {
-            statement.setLong(1, traderId);
-            ResultSet rs = statement.executeQuery();
-            if(rs.next()){
-                isBid = rs.getBoolean("bid");
-            }
-
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
-
+        BigDecimal existingCapital = traderDao.getCapitalForTrader(traderId);
         BigDecimal change = BigDecimal.valueOf(-1).multiply(size).multiply(price);
-
+        boolean isBid = orderDao.isBid(orderId);
         if(!isBid){
             change = change.multiply(BigDecimal.valueOf(-1));
         }
         BigDecimal newCapital = existingCapital.add(change);
-
-        String dbUpdate = "UPDATE account " + "SET capital = ? "
-                          + "WHERE id = ?";
-        try (Connection conn = DatabaseHelper.connect();
-             PreparedStatement pstmt = conn.prepareStatement(dbUpdate)) {
-
-            pstmt.setBigDecimal(1, newCapital);
-            pstmt.setDouble(2, traderId);
-            pstmt.execute();
-
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
+        this.traderDao.updateCapitalForTrader(traderId, newCapital);
     }
 
 }
