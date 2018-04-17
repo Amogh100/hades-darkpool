@@ -108,7 +108,7 @@ public class OrderBookTest {
         for(Order o: orders){
             book.addOrder(o);
         }
-        Order o7 = new Order(2,"BTC",BigDecimal.valueOf(7500), false, OrderType.LIMIT,BigDecimal.valueOf(9900.90),7);
+        Order o7 = new Order(5,"BTC",BigDecimal.valueOf(7500), false, OrderType.LIMIT,BigDecimal.valueOf(9900.90),7);
         book.addOrder(o7);
 
         TestCase.assertEquals(BigDecimal.ZERO, o7.getSize());
@@ -122,5 +122,21 @@ public class OrderBookTest {
 
     }
 
+    @Test
+    public void shouldPreventSelfTrades(){
+        OrderBook book = OrderBookFactory.createNewOrderbook("BTC", 100, false);
+        Order o1 = new Order(1,"BTC",BigDecimal.valueOf(4000), true, OrderType.LIMIT,BigDecimal.valueOf(9900.90),1);
+        Order o2 = new Order(2,"BTC",BigDecimal.valueOf(1000), true, OrderType.LIMIT,BigDecimal.valueOf(9900.90),2);
+        book.addOrder(o1);
+        book.addOrder(o2);
+
+        Order o3 = new Order(1,"BTC",BigDecimal.valueOf(4000), false, OrderType.LIMIT,BigDecimal.valueOf(9900.90),1);
+        book.addOrder(o3);
+
+        TestCase.assertEquals(BigDecimal.valueOf(4000), o1.getSize());
+        TestCase.assertEquals(BigDecimal.valueOf(3000), o3.getSize());
+        TestCase.assertEquals(BigDecimal.ZERO, o2.getSize());
+
+    }
 
 }

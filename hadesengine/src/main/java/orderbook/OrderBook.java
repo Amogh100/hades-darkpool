@@ -125,12 +125,18 @@ public class OrderBook {
     private void processAtPriceLevel(Order order, BigDecimal currPriceLevel, BigDecimal orderPrice, BigDecimal orderSize) throws SQLException {
         try{
             ArrayList<Order> ordersToRemove = new ArrayList<>();
+            boolean selfTrade = false;
             if (currPriceLevel != null && validLimitCross(orderPrice, currPriceLevel, order.isBid())) {
                 ArrayList < Order > ordersAtBestAskBid = priceLevels.get(currPriceLevel);
-                while (ordersAtBestAskBid != null && validLimitCross(orderPrice, currPriceLevel, order.isBid())) {
+                while (ordersAtBestAskBid != null && validLimitCross(orderPrice, currPriceLevel, order.isBid()) && !selfTrade) {
                     //ToDo: Instead of printing snapshot, generate TradeReports.
                     for (int i = 0; i < ordersAtBestAskBid.size(); i++) {
                         Order currOrder = ordersAtBestAskBid.get(i);
+                        //Prevent self trading
+                        if(currOrder.getTraderId() == order.getTraderId()){
+                            selfTrade = true;
+                            continue;
+                        }
                         BigDecimal currOrderQty = currOrder.getSize();
                         //ToDo: refactor this code is really bad
                         //Case where current order can completely fill crossing order, with some left over in
@@ -305,7 +311,7 @@ public class OrderBook {
      * @return true if bids exist
      */
     public boolean bidsExist(){
-        System.out.println("There are " + bidPrices.size() + " bids");
+//        System.out.println("There are " + bidPrices.size() + " bids");
         return bidPrices.size() > 0;
     }
 
@@ -314,7 +320,7 @@ public class OrderBook {
      * @return true if asks exist
      */
     public boolean asksExist(){
-        System.out.println("There are " + askPrices.size() + " asks");
+//        System.out.println("There are " + askPrices.size() + " asks");
         return askPrices.size() > 0;
     }
 
