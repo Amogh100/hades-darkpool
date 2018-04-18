@@ -4,6 +4,7 @@ import dao.OrderDao;
 import dao.TradeDao;
 import dao.TraderDao;
 import eventprocessing.DatabaseHelper;
+import models.Position;
 import models.entities.Trade;
 
 import java.math.BigDecimal;
@@ -15,7 +16,6 @@ import java.util.Set;
 
 public class TradeManager {
 
-    private final TradeDao tradeDao;
     private final OrderDao orderDao;
     private final TraderDao traderDao;
     private TradeCache cache;
@@ -23,7 +23,6 @@ public class TradeManager {
    
     public TradeManager(TradeCache cache){
         this.cache = cache;
-        this.tradeDao = new TradeDao();
         this.orderDao = new OrderDao();
         this.traderDao = new TraderDao();
     }
@@ -35,6 +34,9 @@ public class TradeManager {
             cache.addTrade(t);
             updateAccountsForTrader(t.getTrader1Id(), t.getOrder1Id(), t.getPrice(), t.getSize());
             updateAccountsForTrader(t.getTrader2Id(), t.getOrder2Id(), t.getPrice(), t.getSize());
+            BigDecimal value = t.getPrice().multiply(t.getSize());
+            PositionCache.updatePosition(t.getTrader1Id(), t.getTicker(), value);
+            PositionCache.updatePosition(t.getTrader2Id(), t.getTicker(), value);
         }
     }
 

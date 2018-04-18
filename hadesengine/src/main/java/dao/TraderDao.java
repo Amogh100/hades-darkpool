@@ -1,7 +1,6 @@
 package dao;
 
 import eventprocessing.DatabaseHelper;
-import models.entities.Trader;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -11,7 +10,7 @@ import java.sql.SQLException;
 
 public class TraderDao {
 
-    public BigDecimal getCapitalForTrader(long traderId) {
+    public static BigDecimal getCapitalForTrader(long traderId) {
         String existingCapitalQuery = "SELECT capital FROM account WHERE id = ?";
         BigDecimal existingCapital = BigDecimal.ZERO;
         try (Connection conn = DatabaseHelper.connect();
@@ -29,7 +28,7 @@ public class TraderDao {
     }
 
 
-    public void updateCapitalForTrader(long traderId, BigDecimal newCapital){
+    public static void updateCapitalForTrader(long traderId, BigDecimal newCapital){
         String dbUpdate = "UPDATE account " + "SET capital = ? "
                 + "WHERE id = ?";
         try (Connection conn = DatabaseHelper.connect();

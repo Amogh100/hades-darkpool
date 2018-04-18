@@ -170,14 +170,14 @@ class OrderEntry extends Component {
       <div class="container">
         <div>
           <DropdownButton
-            bsStyle="primary"
+            bsStyle="danger"
             bsSize="large"
             title={this.state.orderType}
           >
             {types}
           </DropdownButton>
           <DropdownButton
-            bsStyle="primary"
+            bsStyle="danger"
             bsSize="large"
             title={this.state.side}
           >
@@ -189,21 +189,17 @@ class OrderEntry extends Component {
             </MenuItem>
           </DropdownButton>
           <DropdownButton
-            bsStyle="primary"
+            bsStyle="danger"
             bsSize="large"
             title={this.state.asset}
           >
             {this.getAssetComponents()}
           </DropdownButton>
-          <Button bsStyle="primary" bsSize="large" onClick={this.enterOrder}>
+          <Button bsStyle="danger" bsSize="large" onClick={this.enterOrder}>
             Enter Order
           </Button>
 
-            <Button bsStyle="primary" bsSize="large" onClick={this.enterOrder}>
-            Enter Order
-          </Button>
-
-            <Button bsStyle="primary" bsSize="large" onClick={this.auth.signOut}>
+            <Button bsStyle="danger" bsSize="large" onClick={this.auth.signOut}>
             Sign Out
           </Button>
         </div>

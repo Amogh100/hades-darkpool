@@ -47,9 +47,10 @@ public class PositionCache {
     }
 
     public static void updatePosition(long traderId, String assetId,BigDecimal change){
-        ArrayList<Position> positionsForTrader = traderPositions.get(traderId);
-        if(positionsForTrader == null){
-            throw new NullPointerException("Failed to find positions for trader " + traderId);
+        ArrayList<Position> positionsForTrader = traderPositions.getOrDefault(traderId, new ArrayList<Position>());
+        if(positionsForTrader.isEmpty()){
+            positionsForTrader.add(new Position(assetId, change, traderId));
+            return;
         }
         for(Position pos: positionsForTrader){
             if(pos.getAssetId().equals(assetId)){

@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 public class TradeDao {
 
-    public void insertTrade(Trade t) {
+    public static void insertTrade(Trade t) {
         try {
             Connection conn = DatabaseHelper.connect();
             StringBuffer traderInsertionStatementStr = new StringBuffer();

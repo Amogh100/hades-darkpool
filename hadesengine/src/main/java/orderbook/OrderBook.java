@@ -149,7 +149,7 @@ public class OrderBook {
                             printSnapshot();
                             currentTrades.add(new Trade(currOrder.getTraderId(), order.getTraderId(),
                                                         currOrder.getGlobalOrderId(), order.getGlobalOrderId(),
-                                                        currPriceLevel, orderSize));
+                                                        currPriceLevel, orderSize, currOrder.getTicker()));
                             return;
                         }
                         //Case where current order exactly fill crossing order
@@ -162,7 +162,7 @@ public class OrderBook {
                             printSnapshot();
                             currentTrades.add(new Trade(currOrder.getTraderId(), order.getTraderId(),
                                                         currOrder.getGlobalOrderId(), order.getGlobalOrderId(),
-                                                        currPriceLevel, orderSize));
+                                                        currPriceLevel, orderSize, currOrder.getTicker()));
                             return;
                         }
                         //Case where current order only partially fills
@@ -176,7 +176,7 @@ public class OrderBook {
                             printSnapshot();
                             currentTrades.add(new Trade(currOrder.getTraderId(), order.getTraderId(),
                                                         currOrder.getGlobalOrderId(), order.getGlobalOrderId(),
-                                                        currPriceLevel, orderSize));
+                                                        currPriceLevel, orderSize, currOrder.getTicker()));
                         }
                     }
                     ordersAtBestAskBid.removeAll(ordersToRemove);
@@ -199,6 +199,7 @@ public class OrderBook {
             }
         } finally {
             this.manager.manageTrades(currentTrades);
+
         }
 
     }

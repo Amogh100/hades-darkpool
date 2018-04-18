@@ -78,31 +78,29 @@ class OrderView extends Component {
     };
     var mainComponent = 
     <div>
-    <div>
-    <input type="text" id="test" value={this.state.capital}/>
-
+    <div style={{color: '#e6e600', fontSize: '20px'}}>
+    <label> Current Capital: {this.state.capital} USD</label>
     </div>
-     <div>
+     <div style={{margin: "10px"}}>
+       
         <OrderEntry>
         </OrderEntry>
      </div>
       <div>
         <h1>Open Orders</h1>
-        <BootstrapTable
+        <BootstrapTable  
           options={options}
           data={this.state.orders}
-          width={5}
-          height={5}
           scrollTop={"Bottom"}
-          replace={true}
-        >
-          <TableHeaderColumn isKey={true} dataField="globalOrderId">
-            Order ID
-          </TableHeaderColumn>
-          <TableHeaderColumn dataField="ticker">Ticker</TableHeaderColumn>
-          <TableHeaderColumn dataField="price">Price</TableHeaderColumn>
-          <TableHeaderColumn dataField="bid">Bid </TableHeaderColumn>
-          <TableHeaderColumn dataField="size">Size </TableHeaderColumn>
+          replace={true}         
+          tableStyle={ { border: '#ffffff 2.5px solid', font: '#ffffff'} }
+          bodyStyle={ { border: 'green 1px solid', font: '#ffffff'} }> 
+        
+          <TableHeaderColumn isKey={true} dataField="globalOrderId" width='5'>Order ID</TableHeaderColumn>
+          <TableHeaderColumn width='1' dataField="ticker">Ticker</TableHeaderColumn>
+          <TableHeaderColumn width='1' dataField="price">Price</TableHeaderColumn>
+          <TableHeaderColumn width='1' dataField="bid">Bid </TableHeaderColumn>
+          <TableHeaderColumn width='1' dataField="size">Size </TableHeaderColumn>
 
           
         </BootstrapTable>
