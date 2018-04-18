@@ -8,8 +8,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ Database Access Object for Traders
+ */
 public class TraderDao {
 
+   /**
+    Gets the capital for a trader.
+    @param traderId trader id of trader to obtain the capital for.
+    */
     public static BigDecimal getCapitalForTrader(long traderId) {
         String existingCapitalQuery = "SELECT capital FROM account WHERE id = ?";
         BigDecimal existingCapital = BigDecimal.ZERO;
@@ -27,7 +34,12 @@ public class TraderDao {
         return existingCapital;
     }
 
-
+    
+    /**
+     Updates the capital for a given trader
+     @param traderId trader id of trader to update capital for 
+     @param newCapital new capital value
+     */
     public static void updateCapitalForTrader(long traderId, BigDecimal newCapital){
         String dbUpdate = "UPDATE account " + "SET capital = ? "
                 + "WHERE id = ?";

@@ -18,6 +18,7 @@ public class PositionCache {
         populateCache();
     }
 
+    //Populate the position cache from the database.
     public static void populateCache(){
         String positionQuery = "SELECT * from position";
         try{
@@ -46,6 +47,12 @@ public class PositionCache {
         return traderPositions;
     }
 
+    //Updates the position for a given trader, in a specific asset.
+    /**
+      @param traderId trader id of trader to update position for
+      @param assetId asset to update the position for
+      @param change Change in position
+     */
     public static void updatePosition(long traderId, String assetId,BigDecimal change){
         ArrayList<Position> positionsForTrader = traderPositions.getOrDefault(traderId, new ArrayList<Position>());
         if(positionsForTrader.isEmpty()){

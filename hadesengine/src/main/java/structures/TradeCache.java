@@ -15,8 +15,11 @@ public class TradeCache {
     //Constructs a TradeCache
     public TradeCache(boolean flushPeriodically){
         this.tradeSet = ConcurrentHashMap.newKeySet();
+        this.flush = flushPeriodically;
         //Schedule a DB update every 100 milliseconds.
-        scheduler.scheduleAtFixedRate(new TradeDatabaseUpdater(this), 100, 100, TimeUnit.MILLISECONDS);
+        if(flush){
+            scheduler.scheduleAtFixedRate(new TradeDatabaseUpdater(this), 100, 100, TimeUnit.MILLISECONDS);
+        }
     }
 
     //getTrades retrieves all the Trades in the Cache

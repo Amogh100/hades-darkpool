@@ -7,8 +7,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ Data Access Object for Trades
+ */
 public class TradeDao {
 
+   //Inserts a Trade in to the database.
+   /**
+    @param t Trade to insert into the database.
+    */
     public static void insertTrade(Trade t) {
         try {
             Connection conn = DatabaseHelper.connect();

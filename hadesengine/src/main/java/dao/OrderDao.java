@@ -13,8 +13,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+
+/**
+ Data Access Object for Orders
+ */
 public class OrderDao {
 
+    //Returns if the given order is a bid
+    /**
+     @param globalOrderId global order id of order to obtain if it's a bid or not
+     */
     public static boolean isBid(long globalOrderId){
         String isBidQuery = "SELECT bid FROM orders WHERE global_order_id = ?";
         boolean isBid = true;
@@ -32,6 +40,9 @@ public class OrderDao {
         return isBid;
     }
 
+    /**
+     getAllOpenOrders returns all open orders in the database.
+     */
     public static HashMap<Long, ArrayList<Order>> getAllOpenOrders(){
         String openOrdersQuery = "SELECT * FROM orders WHERE filled = false";
         HashMap<Long, ArrayList<Order>> results = new HashMap<>();

@@ -19,9 +19,11 @@ public class OpenOrderCache {
     private static ConcurrentHashMap<Long, ArrayList<Order>> openOrders = new ConcurrentHashMap<>();
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
+    //load Populates the open order cache from the database.
     public void load(){
         openOrders = new ConcurrentHashMap<>(OrderDao.getAllOpenOrders());
         scheduler.scheduleAtFixedRate(new Runnable() {
+            //Periodically remove filled orders from the cache.
             @Override
             public void run() {
                 Iterator it = openOrders.entrySet().iterator();
@@ -36,6 +38,7 @@ public class OpenOrderCache {
 
     }
 
+    //Returns all open orders.
     public synchronized static ConcurrentHashMap<Long, ArrayList<Order>> getOpenOrders(){
         return openOrders;
     }
