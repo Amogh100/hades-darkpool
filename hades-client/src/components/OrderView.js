@@ -62,6 +62,9 @@ class OrderView extends Component {
       });
   }
 
+  /**
+   * Scheduled function obtains trades from the server.
+  */
   updateTrades() {
     axios
       .get("http://localhost:8080/trades")
