@@ -10,3 +10,4 @@ The goals for the next checkpoint were for React to send REST requests to obtain
 
 # Screenshots
 [![Trade_Report_Gui.png](https://s14.postimg.cc/ac6j7wyjl/Trade_Report_Gui.png)](https://postimg.cc/image/7uus0nen1/)
+[![Screenshot_from_2018-04-17_23-06-47.png](https://s14.postimg.cc/ac6j7ygk1/Screenshot_from_2018-04-17_23-06-47.png)](https://postimg.cc/image/6ft7byvkd/)
