@@ -28,9 +28,9 @@ public class TradeReportingTest {
         HashSet<Trade> currTrades = btcOrderBook.getCurrentTrades();
         assert(currTrades != null);
         assert(currTrades.size() == 1);
-        Trade expected = new Trade(1, 2,1,2, BigDecimal.valueOf(9900.99), BigDecimal.valueOf(50));
+        Trade expected = new Trade(1, 2,1,2, BigDecimal.valueOf(9900.99), BigDecimal.valueOf(50), "BTC");
         Trade[] trades = currTrades.toArray(new Trade[currTrades.size()]);
         Trade t = trades[0];
-        TestCase.assertEquals(expected, t);
+        TestCase.assertTrue(t.equals(expected));
     }
 }
