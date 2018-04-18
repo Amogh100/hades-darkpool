@@ -8,6 +8,10 @@ I accomplished my goals in addition to adding the Trade Report to the GUI (whose
 # Goals for the next checkpoint
 The goals for the next checkpoint were for React to send REST requests to obtain various information and to write Python simulation scripts that simulate many traders inputting orders, as well as static/dynamic analysis. I still plan on writing the Python simulation scripts. I also sitll plan on analyzing performance for both the hades engine and the rest api. The react client has already been polling the REST endpoints and displaying information, so in my original proposal this is kind of a redundant point. That being said, I could always style the client better, and introduce some nicer GUI changes.
 
+
 # Screenshots
+Trade Reports View
 [![Trade_Report_Gui.png](https://s14.postimg.cc/ac6j7wyjl/Trade_Report_Gui.png)](https://postimg.cc/image/7uus0nen1/)
+
+This is the overall GUI change(Trade Report addition/style changes)
 [![Screenshot_from_2018-04-17_23-06-47.png](https://s14.postimg.cc/ac6j7ygk1/Screenshot_from_2018-04-17_23-06-47.png)](https://postimg.cc/image/6ft7byvkd/)
