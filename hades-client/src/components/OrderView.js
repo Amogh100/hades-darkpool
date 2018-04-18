@@ -11,20 +11,24 @@ class OrderView extends Component {
   
   constructor(props) {
     super(props);
-    this.state = { orders: [] };
+    this.state = { orders: [], trades: []};
     this.auth = new AuthorizationService();
     var jwt = this.auth.getToken();
 
     if(jwt !== undefined && jwt !== null){
       console.log("Found token");
-      this.state = {validSession: true};
+      this.setState({validSession: true});
       axios.defaults.headers.common['Authorization'] = jwt;
       this.updateOrders = this.updateOrders.bind(this);
       this.updateOrders = this.updateOrders.bind(this);
       this.updateTraderState = this.updateTraderState.bind(this);
+      this.updateTrades = this.updateTrades.bind(this);
+
       this.updateOrders();
       setInterval(this.updateOrders, 1000);
       setInterval(this.updateTraderState, 1000);
+      setInterval(this.updateTrades, 1000);
+
 
     }
       /**
@@ -55,6 +59,15 @@ class OrderView extends Component {
       .then(response => {
           console.log(response.data);
           this.setState({ orders: response.data });
+      });
+  }
+
+  updateTrades() {
+    axios
+      .get("http://localhost:8080/trades")
+      .then(response => {
+          console.log(response.data);
+          this.setState({ trades: response.data });
       });
   }
 
@@ -103,6 +116,26 @@ class OrderView extends Component {
           <TableHeaderColumn width='1' dataField="size">Size </TableHeaderColumn>
 
           
+        </BootstrapTable>
+        </div>
+        <div>
+        <h1>Trade Reports</h1>
+        <BootstrapTable  
+          data={this.state.trades}
+          scrollTop={"Bottom"}
+          replace={true}         
+          tableStyle={ { border: '#ffffff 2.5px solid', font: '#ffffff'} }
+          bodyStyle={ { border: 'green 1px solid', font: '#ffffff'} }> 
+        
+          <TableHeaderColumn isKey={true} dataField="trader1Id" width='5'>Trader 1 ID</TableHeaderColumn>
+          <TableHeaderColumn width='1' dataField="trader2Id">Trader 2 Id</TableHeaderColumn>
+          <TableHeaderColumn width='1' dataField="order1Id">Order 1 Id</TableHeaderColumn>
+          <TableHeaderColumn width='1' dataField="order2Id">Order 2 Id </TableHeaderColumn>
+          <TableHeaderColumn width='1' dataField="fillSize">Size</TableHeaderColumn>
+          <TableHeaderColumn width='1' dataField="price">Price</TableHeaderColumn>
+          <TableHeaderColumn width='1' dataField="ticker">Asset </TableHeaderColumn>
+
+
         </BootstrapTable>
         </div>
         </div>;
