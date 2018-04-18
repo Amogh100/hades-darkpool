@@ -18,18 +18,20 @@ public class Trade {
     private final long order2Id;
     private final BigDecimal fillSize;
     private final BigDecimal price;
+    private final String ticker;
 
 
-    public Trade(){this(0, 0, 0, 0,BigDecimal.ZERO,BigDecimal.ZERO);}
+    public Trade(){this(0, 0, 0, 0,BigDecimal.ZERO,BigDecimal.ZERO, "");}
 
 
-    public Trade(long trader1Id, long trader2Id, long order1Id, long order2Id, BigDecimal price, BigDecimal fillSize){
+    public Trade(long trader1Id, long trader2Id, long order1Id, long order2Id, BigDecimal price, BigDecimal fillSize, String ticker){
         this.trader1Id = trader1Id;
         this.trader2Id = trader2Id;
         this.order1Id = order1Id;
         this.order2Id = order2Id;
         this.price = price;
         this.fillSize = fillSize;
+        this.ticker = ticker;
     }
 
 
@@ -57,6 +59,8 @@ public class Trade {
         return fillSize;
     }
 
+    public String getTicker(){return ticker;}
+
     @Override
     public boolean equals(Object other){
         if(other == this){
@@ -66,12 +70,9 @@ public class Trade {
             return false;
         }
         Trade t = (Trade) other;
-        boolean order1equal = t.getOrder1Id() == order1Id;
-        boolean order2Equal = t.getOrder2Id() == order2Id;
-        boolean trader1Equal = t.getTrader1Id() == trader1Id;
-        boolean trader2Equal = t.getTrader2Id() == trader2Id;
-        boolean sizeEqual = t.getSize().equals(fillSize);
-        boolean priceEqual = t.getPrice().equals(price);
-        return order1equal && order2Equal && trader1Equal && trader2Equal && sizeEqual && priceEqual;
+        return t.id == this.id;
     }
+
+
+
 }
