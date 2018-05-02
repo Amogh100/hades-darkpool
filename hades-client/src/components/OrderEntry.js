@@ -91,7 +91,7 @@ class OrderEntry extends Component {
   getOrderPriceComponent() {
     if (this.state.orderType === "LIMIT") {
       return (
-        <div>
+        <div style={{color: "black"}}>
           Limit Price<input
             type="number"
             className={styles.input}
@@ -112,7 +112,7 @@ class OrderEntry extends Component {
   getSizeComponent() {
     if (this.validOrderTypes.some(type => type === this.state.orderType)) {
       return (
-        <div>
+        <div style={{color: "black"}}>
           Order Size{" "}
           <input
             type="number"

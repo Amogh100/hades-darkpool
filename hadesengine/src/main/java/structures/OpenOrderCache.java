@@ -1,12 +1,9 @@
 package structures;
 
 import dao.OrderDao;
-import eventprocessing.TradeDatabaseUpdater;
-import models.Position;
 import models.entities.Order;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

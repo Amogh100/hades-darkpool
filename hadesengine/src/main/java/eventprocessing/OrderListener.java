@@ -6,6 +6,8 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.StringRpcServer;
 import models.entities.Order;
+import models.entities.Position;
+import structures.PositionCache;
 
 import java.io.IOException;
 
@@ -25,6 +27,13 @@ public class OrderListener {
             System.err.println("Main thread caught exception: " + ex);
             ex.printStackTrace();
             System.exit(1);
+        } finally {
+            Runtime.getRuntime().addShutdownHook(new Thread(){
+                public void run(){
+                    System.out.println("CAlled!");
+                    PositionCache.flush();
+                }
+            });
         }
     }
 }

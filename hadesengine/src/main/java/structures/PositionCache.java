@@ -1,14 +1,12 @@
 package structures;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.HashMap;
-import java.sql.Statement;
-import java.sql.ResultSet;
 import java.util.ArrayList;
+
 import eventprocessing.DatabaseHelper;
-import models.Position;
+import models.entities.Position;
 
 public class PositionCache {
 
@@ -68,5 +66,25 @@ public class PositionCache {
         //Add a new position
         positionsForTrader.add(new Position(assetId, change, traderId));
 
+    }
+
+    public static void flush() {
+        if(getTraderPositions().isEmpty()){
+            System.out.println("NO POSITIONS");
+        }
+        for(ArrayList<Position> positionsForTrader: getTraderPositions().values()){
+
+            for(Position position: positionsForTrader){
+                String sql = "UPDATE position SET position_size=? WHERE asset_id=? AND trader_id=?";
+                try(Connection conn = DatabaseHelper.connect(); PreparedStatement stmt = conn.prepareStatement(sql)){
+                    stmt.setBigDecimal(1, position.getPositionSize());
+                    stmt.setString(2, position.getAssetId());
+                    stmt.setLong(3, position.getTraderId());
+                    stmt.executeUpdate();
+                } catch (SQLException e){
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

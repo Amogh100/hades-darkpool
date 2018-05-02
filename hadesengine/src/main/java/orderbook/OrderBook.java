@@ -147,8 +147,9 @@ public class OrderBook {
                             order.setFilled(true);
                             resetOrdersAndPriceLevels(ordersAtBestAskBid, i, currPriceLevel);
                             printSnapshot();
+
                             currentTrades.add(new Trade(currOrder.getTraderId(), order.getTraderId(),
-                                                        currOrder.getGlobalOrderId(), order.getGlobalOrderId(),
+                                                        currOrder.getOrderBookId(), order.getOrderBookId(),
                                                         currPriceLevel, orderSize, currOrder.getTicker()));
                             return;
                         }
@@ -161,7 +162,7 @@ public class OrderBook {
                             currOrder.setFilled(true);
                             printSnapshot();
                             currentTrades.add(new Trade(currOrder.getTraderId(), order.getTraderId(),
-                                                        currOrder.getGlobalOrderId(), order.getGlobalOrderId(),
+                                                        currOrder.getOrderBookId(), order.getOrderBookId(),
                                                         currPriceLevel, orderSize, currOrder.getTicker()));
                             return;
                         }
@@ -175,8 +176,8 @@ public class OrderBook {
                             ordersToRemove.add(currOrder);
                             printSnapshot();
                             currentTrades.add(new Trade(currOrder.getTraderId(), order.getTraderId(),
-                                                        currOrder.getGlobalOrderId(), order.getGlobalOrderId(),
-                                                        currPriceLevel, orderSize, currOrder.getTicker()));
+                                                        currOrder.getOrderBookId(), order.getOrderBookId(),
+                                                        currPriceLevel, currOrderQty, currOrder.getTicker()));
                         }
                     }
                     ordersAtBestAskBid.removeAll(ordersToRemove);
@@ -199,6 +200,9 @@ public class OrderBook {
             }
         } finally {
             this.manager.manageTrades(currentTrades);
+            if(manager.getTradeCache().isFlush()){
+                currentTrades.clear();
+            }
 
         }
 

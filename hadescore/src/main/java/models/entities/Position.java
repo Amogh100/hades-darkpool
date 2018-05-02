@@ -1,6 +1,8 @@
-package models;
+package models.entities;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 
 /**
@@ -8,9 +10,11 @@ import java.math.BigDecimal;
  */
 
 @Entity
+@Table(name = "position")
 public class Position {
 
-
+    @Id
+    private long id;
     private String assetId;
     private BigDecimal positionSize;
     private long traderId;
@@ -31,4 +35,7 @@ public class Position {
         return positionSize;
     }
 
+    public long getTraderId() {
+        return traderId;
+    }
 }

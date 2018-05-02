@@ -29,7 +29,11 @@ public class TradeCache {
 
     //clearCache removes all the Trades from the Cache
     public synchronized void clearCache(){
+        for(Trade t: tradeSet){
+            System.out.println("Clearing " + t);
+        }
         this.tradeSet.clear();
+        System.out.println("Size of cache " + this + " is " + this.tradeSet.size());
     }
     
     /**

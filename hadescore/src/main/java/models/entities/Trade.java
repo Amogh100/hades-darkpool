@@ -73,6 +73,24 @@ public class Trade {
         return t.id == this.id;
     }
 
+    @Override
+    public String toString(){
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("O1ID: ");
+        buffer.append(getOrder1Id());
+        buffer.append(" O2ID: ");
+        buffer.append(getOrder2Id());
+        buffer.append(" T1ID: ");
+        buffer.append(getTrader1Id());
+        buffer.append(" T2ID: ");
+        buffer.append(getTrader2Id());
+        buffer.append(" price: ");
+        buffer.append(getPrice());
+        buffer.append(" size: ");
+        buffer.append(getSize());
+        return buffer.toString();
+    }
+
 
 
 }

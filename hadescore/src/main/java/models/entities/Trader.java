@@ -1,7 +1,5 @@
 package models.entities;
 
-import models.Position;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.HashSet;

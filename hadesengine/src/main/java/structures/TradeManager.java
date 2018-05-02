@@ -1,16 +1,10 @@
 package structures;
 
 import dao.OrderDao;
-import dao.TradeDao;
 import dao.TraderDao;
-import eventprocessing.DatabaseHelper;
-import models.Position;
 import models.entities.Trade;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Set;
 
@@ -57,6 +51,10 @@ public class TradeManager {
         }
         BigDecimal newCapital = existingCapital.add(change);
         this.traderDao.updateCapitalForTrader(traderId, newCapital);
+    }
+
+    public synchronized TradeCache  getTradeCache(){
+        return cache;
     }
 
 }

@@ -134,7 +134,7 @@ class OrderView extends Component {
           <TableHeaderColumn width='1' dataField="trader2Id">Trader 2 Id</TableHeaderColumn>
           <TableHeaderColumn width='1' dataField="order1Id">Order 1 Id</TableHeaderColumn>
           <TableHeaderColumn width='1' dataField="order2Id">Order 2 Id </TableHeaderColumn>
-          <TableHeaderColumn width='1' dataField="fillSize">Size</TableHeaderColumn>
+          <TableHeaderColumn width='1' dataField="size">Size</TableHeaderColumn>
           <TableHeaderColumn width='1' dataField="price">Price</TableHeaderColumn>
           <TableHeaderColumn width='1' dataField="ticker">Asset </TableHeaderColumn>
 

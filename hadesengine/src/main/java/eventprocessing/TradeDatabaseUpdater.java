@@ -14,17 +14,17 @@ public class TradeDatabaseUpdater implements Runnable {
     }
 
     @Override
-    public void run() {
+    public synchronized void run() {
         if(cache.isEmpty()){
             return;
         }
-
-        String insertion = "INSERT INTO trade(trader1Id, trader2Id, order1Id, order2Id, price, fill_size) "
-                            + "VALUES(?,?,?,?,?,?)";
+        String insertion = "INSERT INTO trade (trader1Id, trader2Id, order1Id, order2Id, price, fill_size, ticker) "
+                            + "VALUES(?,?,?,?,?,?,?)";
         try (Connection conn = DatabaseHelper.connect();
              PreparedStatement pstmt = conn.prepareStatement(insertion,
                      Statement.RETURN_GENERATED_KEYS)){
             for(Trade t: cache.getTrades()){
+                System.out.println(t);
                 long id = 0;
                 pstmt.setLong(1, t.getTrader1Id());
                 pstmt.setLong(2, t.getTrader2Id());
@@ -32,6 +32,7 @@ public class TradeDatabaseUpdater implements Runnable {
                 pstmt.setLong(4, t.getOrder2Id());
                 pstmt.setBigDecimal(5, t.getPrice());
                 pstmt.setBigDecimal(6, t.getSize());
+                pstmt.setString(7, t.getTicker());
                 int affectedRows = pstmt.executeUpdate();
                 if(affectedRows > 0){
                     try (ResultSet rs = pstmt.getGeneratedKeys()) {
