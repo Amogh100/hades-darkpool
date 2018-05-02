@@ -55,7 +55,7 @@ class OrderView extends Component {
    */
   updateOrders() {
     axios
-      .get("http://localhost:8080/order")
+      .get("http://35.165.62.166:8080/order")
       .then(response => {
           console.log(response.data);
           this.setState({ orders: response.data });
@@ -67,7 +67,7 @@ class OrderView extends Component {
   */
   updateTrades() {
     axios
-      .get("http://localhost:8080/trades")
+      .get("http://35.165.62.166:8080/trades")
       .then(response => {
           console.log(response.data);
           this.setState({ trades: response.data });
@@ -79,7 +79,7 @@ class OrderView extends Component {
   */
   updateTraderState(){
     axios
-      .get("http://localhost:8080/user/info")
+      .get("http://35.165.62.166:8080/user/info")
       .then(response => {
         console.log(response.data)
         //For now only update the capital view

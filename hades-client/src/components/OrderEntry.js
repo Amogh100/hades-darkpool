@@ -52,7 +52,7 @@ class OrderEntry extends Component {
     );
     //Send order to post endpoint.
     axios
-      .post("http://localhost:8080/order", order)
+      .post("http://35.165.62.166:8080/order", order)
       .then(response => alert(response.data.message));
   }
 
