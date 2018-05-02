@@ -23,7 +23,7 @@ export default class AuthorizationService {
     login = function(data) {
         const username = data.username;
         const password = data.password;
-        axios.post("http://35.165.62.166/user/signIn", {"username": username, "password": password}).then(
+        axios.post("http://35.165.62.166:8080/user/signIn", {"username": username, "password": password}).then(
             response => {
                 this.updateToken(response.data.message);
                 window.location.replace("/");
@@ -42,7 +42,7 @@ export default class AuthorizationService {
         const passwordConfirmation = data.passwordConfirmation;
         if(this.validatePasswordSignUp(password, passwordConfirmation)){
             axios
-              .post("http://35.165.62.166/user/signUp", data)
+              .post("http://35.165.62.166:8080/user/signUp", data)
               .then(response => {
                 this.updateToken(response.data.message);
                 Promise.resolve(response);
