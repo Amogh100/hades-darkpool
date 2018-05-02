@@ -83,6 +83,6 @@ public class OrderGateway {
     public ResponseEntity<List<Order>> getOrdersForTrader(){
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         Long traderId = traderRepository.findByUsername(userName).getId();
-        return ResponseEntity.ok().body(orderService.getOrdersForTrader(traderId));
+        return ResponseEntity.ok().body(orderService.getOpenOrders(traderId));
     }
 }

@@ -43,6 +43,17 @@ public class OrderService {
     }
 
     /**
+     *
+     * @param traderId id of the trader to get the open orders of
+     * @return List of open orders entered by the trader with id traderId.
+     */
+    public List<Order> getOpenOrders(long traderId){
+        return orders.findOpenOrders(traderId);
+    }
+
+
+
+    /**
      * Sends a serialized order to the queueing service,
      * which sends the message over RabbitMQ
      * @param orderMessage Serialized order to process.
