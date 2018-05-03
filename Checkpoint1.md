@@ -12,7 +12,6 @@ Endpoints for GUI". There are several noteworthy modifications to this checkpoin
 # Screenshots  
 ![Alt text](cp1images/database.png)
 This is a snapshot of the Trade database (effectively, the trade reports)
-
 ![Alt text](cp1images/trade_report_json.png)
 This is the result of making request to the "trades" endpoint. I am getting all the trades for my current user and then displaying that in JSON which was one of my core goals.
 
