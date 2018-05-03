@@ -26,3 +26,4 @@ This is done every trade. I'll discuss this in
 ![Alt text](simulation/SimulationProgrammingRunning.png)
 This is command line output of the simulation program that's running
 ![Alt text](simulation/ec2ip.png)
+This is website deployed on EC2. Note the highlighted IP address.
