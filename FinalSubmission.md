@@ -18,3 +18,6 @@ I also deployed the application on AWS as planned.
 
 # Screenshots
 ![Alt text](simulation/DynamicAnalysisOfEngine.png)
+![Alt text](simulation/DynamicAnalysisOfRest.png)
+![Alt text](simulation/SimulationProgrammingRunning.png)
+![Alt text](simulation/sql_performance.png)
