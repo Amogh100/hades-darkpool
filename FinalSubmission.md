@@ -16,3 +16,5 @@ around the rough prices of the currencies. Whether the order is a buy or sell is
 a heavier focus on the dynamic analysis, as much of my "static" analysis was done during each of the Homeworks/Checkpoints.
 I also deployed the application on AWS as planned.
 
+# Screenshots
+![Alt text](simulation/DynamicAnalysisOfEngine.png)
