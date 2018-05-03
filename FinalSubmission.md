@@ -22,7 +22,7 @@ This is dynamic analysis of the engine code. Those mini-cliffs aren't great, tho
 This is dynamic analysis of the Spring Boot Rest API.
 ![Alt text](simulation/sql_performance.png)
 This is dynamic analysis of the SQL Performance. The queries to get the account associated with the trader is the bottleneck.
-This is done every trade. I'll discuss this in the "What I Would Do next".
+This is done every trade.
 ![Alt text](simulation/SimulationProgrammingRunning.png)
 This is command line output of the simulation program that's running
 ![Alt text](simulation/ec2ip.png)
