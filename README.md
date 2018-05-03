@@ -9,6 +9,7 @@ Is cross-platform (Windows, OS X, Linux), although it has been tested the most o
 
 Dependencies/Tools needed:
 Java JDK/JRE 8+<br />
+Go vs 1.10 https://golang.org/doc/install
 Maven 3 <br />
 Node.js version 8.9.1 <br />
 NPM version 5.5.1 <br />
@@ -30,6 +31,9 @@ The hades engine is the main project that listens for orders via RPC and RabbitM
 
 Running Hades Rest API <br />
 The hades rest api is a Spring Boot project that exposes HTTP endpoints for a client application.To run it, do java -jar target/hadesrest-{version num}.jar
+
+Running Simulation Script <br />
+After installing go 1.10, to run the script run "go run simulation.go"
 
 
 
