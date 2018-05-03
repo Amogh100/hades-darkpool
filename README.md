@@ -1,6 +1,8 @@
 [![Build Status](https://travis-ci.org/Amogh100/hades-darkpool.svg?branch=master)](https://travis-ci.org/Amogh100/hades-darkpool)
 # hades-darkpool
-This is a simple dark pool for cryptocurrencies called hades. This is a project for my CSCI 3010 course. It includes a front end client in react, and a rest api implemented using Spring Boot.
+This is a simple dark pool for cryptocurrencies called hades. This is a project for my CSCI 3010 course. It includes a front end client in react, and a rest api implemented using Spring Boot. For the final part of the project, I deployed this on AWS
+EC2. The installationn setup is the same, you may need to install maven, node, npm, and docker via the package manager
+of your choice of Server. I used an ubuntu server, so these were all just installed via apt-get.
 
 System Requirements:
 Is cross-platform (Windows, OS X, Linux), although it has been tested the most on Linux.
