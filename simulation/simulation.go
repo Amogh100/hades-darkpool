@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"sync"
 	"time"
+	"os"
 )
 
 type Trader struct {
@@ -55,7 +56,7 @@ func (trader *Trader) placeOrder(order *Order) {
 	if err != nil {
 		fmt.Println("Error serializing order ")
 	}
-	req, err := http.NewRequest("POST", "http://localhost:8080/order", bytes.NewBuffer(serialized))
+	req, err := http.NewRequest("POST", "http://35.165.62.166:8080/order", bytes.NewBuffer(serialized))
 	fmt.Println(string(serialized))
 	req.Header.Set("Content-Type", "application/json")
 
@@ -91,9 +92,9 @@ func main() {
 	rand.Seed(time.Now().Unix())
 	s := rand.NewSource(time.Now().Unix())
 	r = rand.New(s)
-	t1 := Trader{traderId: "t1", token: "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0cmFkZXIxIiwiY3JlYXRlZCI6MTUyNTA1NTQ3NTY3NywiZXhwIjoxNTI1NzU1NDc1fQ.2NM-nLehpncZd1PWs7xrGB0StuVJHnTjkpqaNNnlBqJO6FlHX-2zo5t6zW8R7uKOzGGvJ-GzuIP1jN68iDKDYw"}
-	t2 := Trader{traderId: "t2", token: "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0cmFkZXIyIiwiY3JlYXRlZCI6MTUyNTA1NTUwOTkxNCwiZXhwIjoxNTI1NzU1NTA5fQ.uzR2ws0qFtfJkRPQwiIQpF6eFqUojzD0raLpXVj57M-37q5ATs7KUEVsbSWOIQbJVpAM-YIxfC_EKwIa9dkdig"}
-	t3 := Trader{traderId: "t3", token: "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0cmFkZXIzIiwiY3JlYXRlZCI6MTUyNTA1NTUzODAyOSwiZXhwIjoxNTI1NzU1NTM4fQ.Z8wFLcoXW1fOKVhodtHkHWF0PWYnKBA6zybgxBio9vfWEeTDy-n4jPNnlMbfT6NkZsR4rTzpjJGFQ3kCaYIJlA"}
+	t1 := Trader{traderId: "t1", token: os.Getenv("t1")}
+	t2 := Trader{traderId: "t2", token: os.Getenv("t2")}
+	t3 := Trader{traderId: "t3", token: os.Getenv("t3")}
 	cryptos := []string{"BTC", "ETH", "XRP", "LTC"}
 	sharedClient = &http.Client{}
 	traders := []Trader{t1, t2, t3}
