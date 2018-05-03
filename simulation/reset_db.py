@@ -6,7 +6,7 @@ import os
 username = os.environ['POSTGRES_USERNAME']
 password = os.environ['POSTGRES_PASSWORD']
 
-conn = psycopg2.connect(dbname="hadesmaster", user=username, password=password, host="/var/run/postgresql")
+conn = psycopg2.connect(dbname="hadesmaster", user=username, password=password, host="127.0.0.1")
 cur = conn.cursor()
 
 #Truncate trades and orders
