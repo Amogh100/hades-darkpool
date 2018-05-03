@@ -22,8 +22,12 @@ This is dynamic analysis of the engine code. Those mini-cliffs aren't great, tho
 This is dynamic analysis of the Spring Boot Rest API.
 ![Alt text](simulation/sql_performance.png)
 This is dynamic analysis of the SQL Performance. The queries to get the account associated with the trader is the bottleneck.
-This is done every trade. I'll discuss this in 
+This is done every trade. I'll discuss this in the "What I Would Do next".
 ![Alt text](simulation/SimulationProgrammingRunning.png)
 This is command line output of the simulation program that's running
 ![Alt text](simulation/ec2ip.png)
 This is website deployed on EC2. Note the highlighted IP address.
+
+# What I Would Do Next
+There are aspects of the project I can improve upon. First, I believe the order book code should be split into more components. That code is functiona l but just too messy. Also I could've used a greater variety of design patterns. I mostly used Factory/Singleton designs. Even though I was working 
+by myself, I probably should have used multiple feature branches. In terms of features I want to add going forward, the first would be a portfolio tracking system as well as P/L. I also think some type of payment integration would be important, although both of these are massive components on their own. Overall, this was a great project to work on and it was a good learning experience. With fairly consistent code schedules, I accomplished one of my core goals for the project.
