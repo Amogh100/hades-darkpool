@@ -10,6 +10,7 @@ Is cross-platform (Windows, OS X, Linux), although it has been tested the most o
 Dependencies/Tools needed:
 Java JDK/JRE 8+<br />
 Go vs 1.10 https://golang.org/doc/install
+Python 3+
 Maven 3 <br />
 Node.js version 8.9.1 <br />
 NPM version 5.5.1 <br />
