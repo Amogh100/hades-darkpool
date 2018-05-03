@@ -1,5 +1,9 @@
 package main
 
+/**
+  * This is a simulation script that spawns three traders who put in random (but fairly reasonable) orders
+  * It sends the orders through the dark pool rest api, which in turn is processed by the engine.
+  */
 import (
 	"bytes"
 	"encoding/json"
@@ -12,10 +16,7 @@ import (
 	"time"
 	"os"
 )
-/**
-  * This is a simulation script that spawns three traders who put in random (but fairly reasonable) orders
-  * It sends the orders through the dark pool rest api, which in turn is processed by the engine.
-  */
+
 
 //Struct that wraps a trader, with a local id (not the one in the database) and the JWT token  
 type Trader struct {
