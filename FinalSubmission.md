@@ -4,7 +4,7 @@ In my original proposal I had goals for writing a simulation script, which simul
 analysis, and deploying the application on AWS.
 
 # What I Did
-I performed these as specified. One change I made was the progamming language used for the simulation script. Originally,
+I performed most of these as specified. One change I made was the progamming language used for the simulation script. Originally,
 I had plans for using Python. I ended up writing the program in Go https://golang.org/. The reason for this change was because of the
 limitations of Python. I needed the traders to input orders to the API concurrently. Concurrency is important to test the responsiveness
 of my API and engine, since in an actual trading system receives many orders simulataneuously and has to be able to process
