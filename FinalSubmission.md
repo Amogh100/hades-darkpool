@@ -17,10 +17,10 @@ I also deployed the application on AWS as planned.
 
 # Screenshots
 ![Alt text](simulation/DynamicAnalysisOfEngine.png)
-This is dynamic analysis of the engine code.
+This is dynamic analysis of the engine code. Those mini-cliffs aren't great, those are Garbage Collection calls which temporarily stop the system which for a latency sensitive system is pretty bad.
 ![Alt text](simulation/DynamicAnalysisOfRest.png)
-This is dynamic analysis of the Spring Boot Rest API
+This is dynamic analysis of the Spring Boot Rest API.
 ![Alt text](simulation/sql_performance.png)
-This is dynamic analysis of the SQL Performance.
+This is dynamic analysis of the SQL Performance. 
 ![Alt text](simulation/SimulationProgrammingRunning.png)
 This is command line output of the simulation program that's running
