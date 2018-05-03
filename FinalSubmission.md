@@ -29,5 +29,5 @@ This is command line output of the simulation program that's running
 This is website deployed on EC2. Note the highlighted IP address.
 
 # What I Would Do Next
-There are aspects of the project I can improve upon. First, I believe the order book code should be split into more components. That code is functiona l but just too messy. Also I could've used a greater variety of design patterns. I mostly used Factory/Singleton designs. Even though I was working 
+There are aspects of the project I can improve upon. First, I believe the order book code should be split into more components. That code is functional but just too messy. Also I could've used a greater variety of design patterns. I mostly used Factory/Singleton designs. Even though I was working 
 by myself, I probably should have used multiple feature branches. In terms of features I want to add going forward, the first would be a portfolio tracking system as well as Profit/Loss. I also think some type of payment integration would be important, although both of these are massive components on their own. Overall, this was a great project to work on and it was a good learning experience. With fairly consistent code schedules, I accomplished one of my core goals for the project.
